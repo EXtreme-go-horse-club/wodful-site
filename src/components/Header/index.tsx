@@ -1,6 +1,7 @@
 import { Link } from "gatsby";
 import * as React from "react";
 import HeaderLogo from "../../images/wodful-logo.svg";
+import Hamburger from "../Hamburger";
 import * as styles from "./styles.module.css";
 
 type NavLinks = {
@@ -20,9 +21,10 @@ const navLinks: NavLinks[] = [
 ];
 
 export const Header = () => (
-  <section>
+  <section className={styles.container_size}>
     <header className={styles.header}>
       <img src={HeaderLogo} alt="Wodful logo" />
+
       <article>
         <nav className={styles.space}>
           {navLinks.map((link) => (
@@ -39,6 +41,7 @@ export const Header = () => (
           Entrar em contato
         </button>
       </article>
+      <Hamburger isOpen={false} />
     </header>
     <main>
       <section className={styles.section}>
@@ -46,7 +49,7 @@ export const Header = () => (
           <h1 className={styles.title}>Gerencie seu evento de Crossfit</h1>
           <p className={styles.text}>
             Eleve o nível do seu evento de CrossFit com o
-            <strong>Sistema de Scoreboard</strong>
+            <strong> Sistema de Scoreboard </strong>
             inovador da Wodful e acompanhe o andamento da sua competição de
             qualquer lugar em tempo real
           </p>
