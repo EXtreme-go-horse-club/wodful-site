@@ -8,8 +8,8 @@
 .section {
     display: grid;
     grid-template-columns: auto auto auto;
-    row-gap: 64px;
-    column-gap: 75px;
+    row-gap: 4rem;
+    column-gap: 4.68rem;
 }
 
 .sub_title {
@@ -47,6 +47,7 @@ p {
 
     .section {
         grid-template-columns: auto;
+        row-gap: 2.5rem;
     }
 
 }

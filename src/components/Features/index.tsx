@@ -53,7 +53,7 @@ const features: Feature[] = [
 ];
 
 export const Feature = () => (
-  <section className={styles.container}>
+  <section id="features" className={styles.container}>
     <h1>Funcionalidades</h1>
     <section className={styles.section}>
       {features.map((feat) => (

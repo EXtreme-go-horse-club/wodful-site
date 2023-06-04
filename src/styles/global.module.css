@@ -12,6 +12,8 @@
 
     background-color: var(--blue-dark);
     color: var(--white);
+
+    scroll-behavior: smooth;
 }
 
 button {
