@@ -1,0 +1,53 @@
+.container {
+    padding: 5rem 7.5rem;
+    gap: 6rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.section {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    row-gap: 4rem;
+    column-gap: 4.68rem;
+}
+
+.sub_title {
+    max-width: 350px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin: 2.5rem 0 1rem 0;
+}
+
+p {
+    max-width: 350px;
+}
+
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+
+    .section {
+        grid-template-columns: auto auto;
+    }
+
+    .container {
+        gap: 4rem;
+    }
+
+}
+
+
+@media screen and (max-width: 767px) {
+
+    .container {
+        padding: 2.5rem;
+        gap: 3rem;
+    }
+
+    .section {
+        grid-template-columns: auto;
+        row-gap: 2.5rem;
+    }
+
+}
