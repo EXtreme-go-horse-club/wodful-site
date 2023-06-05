@@ -1,0 +1,42 @@
+.fake_image {
+    width: 435px;
+    height: 500px;
+    background-color: white;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5rem 15% 0 15%;
+}
+
+.container_left {
+    max-width: 28.4375rem;
+    margin-right: 20px;
+}
+
+.img_phone {
+    width: 100%;
+}
+
+
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+
+    .container_left {
+        margin-right: 20px;
+    }
+
+}
+
+
+@media screen and (max-width: 767px) {
+    .container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2.5rem 2.5rem 0 2.5rem;
+        gap: 3rem;
+    }
+
+}
