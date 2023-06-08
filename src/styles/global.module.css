@@ -7,6 +7,7 @@
     --teal-500: #319795;
 
     --gray-400: #A0AEC0;
+    --gray-200: #E2E8F0;
 
     font-family: 'Inter', sans-serif;
 
@@ -56,6 +57,41 @@ h1 {
     line-height: 3.75rem;
     margin-bottom: 1rem;
 }
+
+input,
+textarea {
+    box-sizing: border-box;
+
+    height: 40px;
+
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5rem;
+
+    color: rgba(0, 0, 0, 0.36);
+}
+
+textarea {
+    min-height: 80px;
+    color: rgba(0, 0, 0, 0.36);
+    resize: none;
+}
+
+textarea::placeholder {
+    color: rgba(0, 0, 0, 0.36);
+    opacity: 1;
+}
+
+input::placeholder {
+    color: rgba(0, 0, 0, 0.36);
+    opacity: 1;
+}
+
 
 
 @media screen and (max-width: 767px) {
