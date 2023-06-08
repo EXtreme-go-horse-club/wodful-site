@@ -12,8 +12,6 @@ export const Mobile = () => (
         melhorar sua experiência.
       </p>
     </article>
-    <article>
-      <img className={styles.img_phone} src={Phone} alt="Ícone de celular" />
-    </article>
+    <img className={styles.img_phone} src={Phone} alt="Ícone de celular" />
   </section>
 );

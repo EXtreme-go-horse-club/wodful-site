@@ -1,0 +1,23 @@
+.container_footer {
+    padding: 1rem 5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.space {
+    display: flex;
+    gap: 2.5rem;
+}
+
+
+@media screen and (max-width: 767px) {
+    .container_footer {
+        flex-direction: column;
+        gap: 2rem;
+
+        padding: 2rem 3rem;
+
+    }
+}
