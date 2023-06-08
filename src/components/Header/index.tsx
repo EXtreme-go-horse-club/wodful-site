@@ -1,5 +1,6 @@
 import { Link } from "gatsby";
 import * as React from "react";
+import Sistem from "../../images/sistem.svg";
 import HeaderLogo from "../../images/wodful-logo.svg";
 import Hamburger from "../Hamburger";
 import * as styles from "./styles.module.css";
@@ -103,7 +104,7 @@ export const Header = () => {
             </button>
           </article>
 
-          <div className={styles.image_fake}></div>
+          <img src={Sistem} className={styles.capa} alt="Capa do sistema" />
         </section>
       </main>
     </section>

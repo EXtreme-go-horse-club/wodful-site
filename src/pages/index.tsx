@@ -1,6 +1,7 @@
 import type { PageProps } from "gatsby";
 import "normalize.css/normalize.css";
 import * as React from "react";
+import { Banner } from "../components/Banner";
 import { Benefits } from "../components/Benefits";
 import { Contact } from "../components/Contact";
 import { Feature } from "../components/Features";
@@ -14,6 +15,7 @@ const IndexPage: React.FC<PageProps> = () => {
     <>
       <Header />
       <Feature />
+      <Banner />
       <Benefits />
       <Mobile />
       <Contact />

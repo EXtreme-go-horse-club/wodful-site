@@ -1,16 +1,19 @@
 .container {
     display: flex;
-    padding: 6rem 15%;
+    padding: 6rem 10%;
     background-color: var(--white);
     color: #141414;
     min-height: 648px;
 
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: space-evenly;
+
+    margin: auto;
+
 }
 
 .section_input {
-    max-width: 400px;
+    max-width: 25rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -23,18 +26,17 @@
 }
 
 .img {
-    width: 472px;
-    height: 430px;
-    background-color: #141414;
+    width: 100%;
 }
 
 .text {
-    max-width: 400px;
+    max-width: 25rem;
     margin-bottom: 20px;
 }
 
 .section_img {
-    max-width: 472px;
+    max-width: 100%;
+    height: auto;
 }
 
 .form_input {
@@ -53,38 +55,30 @@
 }
 
 @media screen and (min-width: 768px) and (max-width: 1023px) {
-    .container {
-        flex-direction: column-reverse;
-
-        gap: 1rem;
-
-    }
 
     .section_input {
         margin-right: 0rem;
     }
 
-    .img {
-        width: 272px;
-        height: 230px;
-        background-color: #141414;
+    .container {
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: 1rem;
     }
+
 }
 
 
 @media screen and (max-width: 767px) {
     .container {
         flex-direction: column-reverse;
+        align-items: center;
         gap: 1rem;
+        padding: 6rem 10%;
     }
 
     .section_input {
         margin-right: 0rem;
     }
 
-    .img {
-        width: 272px;
-        height: 230px;
-        background-color: #141414;
-    }
 }

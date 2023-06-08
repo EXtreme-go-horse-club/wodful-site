@@ -1,4 +1,5 @@
 import * as React from "react";
+import CrossColab from "../../images/cross-colab.svg";
 import * as styles from "./styles.module.css";
 
 type ContactForm = {
@@ -77,7 +78,7 @@ export const Contact = () => {
         <button className={styles.button}> Enviar </button>
       </form>
       <section className={styles.section_img}>
-        <div className={styles.img}>Bloco 1</div>
+        <img src={CrossColab} className={styles.img} alt="Banner da Wodful" />
       </section>
     </section>
   );

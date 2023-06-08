@@ -1,8 +1,11 @@
 .container {
-    padding: 5rem 7.5rem;
+    padding: 5rem 0;
     gap: 6rem;
     display: flex;
     flex-direction: column;
+
+    margin: auto;
+    width: 80%;
 }
 
 .section {
@@ -41,7 +44,7 @@ p {
 @media screen and (max-width: 767px) {
 
     .container {
-        padding: 2.5rem;
+        padding: 3rem 0;
         gap: 3rem;
     }
 

@@ -1,0 +1,85 @@
+.container {
+    position: relative;
+    padding: 3rem 0;
+    display: flex;
+    flex-direction: column;
+
+    margin: auto;
+}
+
+
+.h3 {
+    position: absolute;
+    left: 12.5%;
+    right: 50%;
+    top: 20%;
+
+
+    font-family: 'Oswald';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 3.25rem;
+    line-height: 3.625rem;
+    letter-spacing: -0.8px;
+    text-transform: uppercase;
+    min-width: 33.75rem;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.banner_mobile {
+    display: none;
+}
+
+.banner_desk {
+    display: flex;
+}
+
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+
+    .h3 {
+        font-size: 2.25rem;
+        line-height: 2.625rem;
+        min-width: 23rem;
+    }
+
+
+}
+
+
+@media screen and (max-width: 767px) {
+
+    .container {
+        padding: 3rem 0;
+        gap: 3rem;
+    }
+
+    .banner_mobile {
+        display: flex;
+    }
+
+    .banner_desk {
+        display: none;
+    }
+
+    .h3 {
+        position: absolute;
+        height: 210px;
+        left: 11.11%;
+        right: 34.72%;
+
+        font-style: normal;
+        font-weight: 700;
+        font-size: 32px;
+        line-height: 42px;
+
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+        font-size: 2.25rem;
+        line-height: 2.625rem;
+        min-width: 10rem;
+
+    }
+
+
+}
