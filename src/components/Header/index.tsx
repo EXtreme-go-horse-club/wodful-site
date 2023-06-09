@@ -21,29 +21,33 @@ const navLinks: NavLinks[] = [
   },
 ];
 
+const isBrowser = typeof window !== "undefined";
+
 export const Header = () => {
   const [hamburgerOpen, setHamburgerOpen] = React.useState(false);
 
-  const [windowSize, setWindowSize] = React.useState([
-    window.innerWidth,
-    window.innerHeight,
-  ]);
+  if (isBrowser) {
+    const [windowSize, setWindowSize] = React.useState([
+      window.innerWidth,
+      window.innerHeight,
+    ]);
 
-  React.useEffect(() => {
-    const handleWindowResize = () => {
-      setWindowSize([window.innerWidth, window.innerHeight]);
-    };
+    React.useEffect(() => {
+      const handleWindowResize = () => {
+        setWindowSize([window.innerWidth, window.innerHeight]);
+      };
 
-    window.addEventListener("resize", handleWindowResize);
+      window.addEventListener("resize", handleWindowResize);
 
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
+      return () => {
+        window.removeEventListener("resize", handleWindowResize);
+      };
+    }, []);
 
-  React.useEffect(() => {
-    if (windowSize[0] > 767) setHamburgerOpen(false);
-  }, [windowSize[0]]);
+    React.useEffect(() => {
+      if (windowSize[0] > 767) setHamburgerOpen(false);
+    }, [windowSize[0]]);
+  }
 
   const toggleHamburger = () => {
     setHamburgerOpen(!hamburgerOpen);

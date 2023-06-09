@@ -1,10 +1,9 @@
 import type { GatsbyConfig } from "gatsby";
 
 const config: GatsbyConfig = {
-  siteMetadata: {
-    siteUrl: `https://www.yourdomain.tld`,
+  flags: {
+    DEV_SSR: false,
   },
-  graphqlTypegen: true,
 };
 
 export default config;
