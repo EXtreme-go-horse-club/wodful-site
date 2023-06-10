@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "gatsby": "^5.10.0",
+    "gatsby-plugin-google-gtag": "^5.10.0",
     "gatsby-plugin-manifest": "^5.10.0",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",
@@ -25,6 +26,7 @@
     "sass": "^1.62.1"
   },
   "devDependencies": {
+    "@types/gtag.js": "^0.0.12",
     "@types/node": "^20.2.5",
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",

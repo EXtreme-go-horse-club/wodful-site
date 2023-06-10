@@ -3,4 +3,5 @@ node_modules/
 public
 .vscode
 src/gatsby-types.d.ts
+.env*
 
