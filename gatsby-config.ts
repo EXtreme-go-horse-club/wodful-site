@@ -4,12 +4,17 @@ const config: GatsbyConfig = {
   flags: {
     DEV_SSR: false,
   },
-  siteMetadata: {
-    title: `Wodful - Site`,
-    description: `Gestão de eventos de crossfit`,
-    image: `./src/images/fav.svg`,
-    siteUrl: `https://www.wodful.com`,
-  },
+  plugins: [
+    {
+      resolve: "gatsby-plugin-manifest",
+      options: {
+        icon: "./src/images/fav.svg",
+        name: `Wodful - Site`,
+        short_name: `Wodful`,
+        start_url: `/`,
+      },
+    },
+  ],
 };
 
 export default config;

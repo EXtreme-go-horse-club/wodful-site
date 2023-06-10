@@ -1,5 +1,6 @@
 import React from "react";
-import FacIcon from "../../images/fav.svg";
+
+import FavIcon from "./../../images/fav.svg";
 
 type SEOProps = {
   children: React.ReactNode;
@@ -8,8 +9,8 @@ type SEOProps = {
 const SEO = ({ children }: SEOProps) => (
   <>
     <title>Wodful Site</title>
-    <link id="icon" rel="icon" href={FacIcon} />
     <meta charSet="UTF-8" />
+    <link rel="icon" href={FavIcon} type="image/svg+xml" />
     <meta name="description" content="Gestão de eventos de Crossfit" />
     <meta name="keywords" content="Crossfit, Fitness, Competição" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
