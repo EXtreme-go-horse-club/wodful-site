@@ -21,6 +21,17 @@
     margin-right: 2rem;
 }
 
+.thanks {
+    max-width: 25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+}
+
+.contact_image {
+    width: 3rem;
+}
+
 .h1 {
     margin-bottom: 0px;
 }
