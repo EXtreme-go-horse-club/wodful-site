@@ -31,7 +31,7 @@ export const Footer = () => {
         ))}
       </nav>
       <article>
-        <span>© Copyright 2018 Wodful</span>
+        <span>© Copyright 2021 Wodful</span>
       </article>
     </footer>
   );

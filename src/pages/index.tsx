@@ -8,11 +8,12 @@ import { Feature } from "../components/Features";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { Mobile } from "../components/Mobile";
+import { Head } from "../components/SEO";
 import "../styles/global.module.css";
 
 const IndexPage: React.FC<PageProps> = () => {
   return (
-    <>
+    <Head>
       <Header />
       <Feature />
       <Banner />
@@ -20,7 +21,7 @@ const IndexPage: React.FC<PageProps> = () => {
       <Mobile />
       <Contact />
       <Footer />
-    </>
+    </Head>
   );
 };
 
