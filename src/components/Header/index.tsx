@@ -55,7 +55,9 @@ export const Header = () => {
   return (
     <section className={styles.container_size}>
       <header className={styles.header}>
-        <img src={HeaderLogo} alt="Wodful logo" />
+        <Link to="#">
+          <img src={HeaderLogo} alt="Wodful logo" />
+        </Link>
 
         <article>
           <nav className={styles.space}>
@@ -68,10 +70,14 @@ export const Header = () => {
         </article>
 
         <article className={styles.space}>
-          <Link to="/">Acesse</Link>
-          <button className={styles.button_header} type="button">
-            Entrar em contato
-          </button>
+          {/* <Link target="_blank" to="https://app.wodful.com/login">
+            Acesse
+          </Link> */}
+          <Link to="#contact">
+            <button className={styles.button_header} type="button">
+              Entrar em contato
+            </button>
+          </Link>
         </article>
         <div onClick={toggleHamburger} className={styles.hamburger}>
           <Hamburger isOpen={hamburgerOpen} />
@@ -85,12 +91,14 @@ export const Header = () => {
               {link.description}
             </Link>
           ))}
-          <Link to="/">Acesse</Link>
+          {/* <Link to="/">Acesse</Link> */}
         </nav>
 
-        <button className={styles.button_header} type="button">
-          Entrar em contato
-        </button>
+        <Link to="#contact">
+          <button className={styles.button_header} type="button">
+            Entrar em contato
+          </button>
+        </Link>
       </section>
 
       <main>
@@ -103,9 +111,11 @@ export const Header = () => {
               inovador da Wodful e acompanhe o andamento da sua competição de
               qualquer lugar em tempo real
             </p>
-            <button className={styles.button_cta} type="button">
-              Entrar em contato
-            </button>
+            <Link to="#contact">
+              <button className={styles.button_cta} type="button">
+                Entrar em contato
+              </button>
+            </Link>
           </article>
 
           <img src={Sistem} className={styles.capa} alt="Capa do sistema" />

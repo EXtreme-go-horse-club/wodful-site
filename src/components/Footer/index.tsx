@@ -22,7 +22,9 @@ const navLinks: NavLinks[] = [
 export const Footer = () => {
   return (
     <footer className={styles.container_footer}>
-      <img src={HeaderLogo} alt="Wodful logo" />
+      <Link to="#">
+        <img src={HeaderLogo} alt="Wodful logo" />
+      </Link>
       <nav className={styles.space}>
         {navLinks.map((link) => (
           <Link key={link.description} to={link.to}>
