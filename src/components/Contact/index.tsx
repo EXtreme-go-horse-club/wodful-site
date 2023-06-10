@@ -33,7 +33,9 @@ export const Contact = () => {
     typeof window !== "undefined" &&
       window.gtag("event", "click", {
         event_label: "contact_send",
-        description: "Submit contact",
+        content_type: "first_contact",
+        value: `${data.firstName} ${data.lastName} - ${data.email} - ${data.tel}`,
+        description: `${data.message}`,
       });
   };
 
