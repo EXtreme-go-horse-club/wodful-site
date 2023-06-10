@@ -8,6 +8,10 @@
     width: 80%;
 }
 
+.icon {
+    margin-bottom: 0.5rem;
+}
+
 .section {
     display: grid;
     grid-template-columns: auto auto auto;
