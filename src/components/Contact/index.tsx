@@ -27,9 +27,14 @@ export const Contact = () => {
 
   const onSubmit: SubmitHandler<ContactForm> = (data) => {
     setAlreadyContact(true);
-    localStorage.setItem("@wodful:contact_ok", JSON.stringify(true));
     reset();
-    console.log(data);
+
+    localStorage.setItem("@wodful:contact_ok", JSON.stringify(true));
+    typeof window !== "undefined" &&
+      window.gtag("event", "click", {
+        event_label: "contact_send",
+        description: "Submit contact",
+      });
   };
 
   React.useEffect(() => {

@@ -58,7 +58,11 @@ export const Feature = () => (
     <section className={styles.section}>
       {features.map((feat) => (
         <article key={feat.title}>
-          <img src={feat.icon} alt={`ícone de ${feat.title}`} />
+          <img
+            src={feat.icon}
+            className={styles.icon}
+            alt={`ícone de ${feat.title}`}
+          />
           <h2 className={styles.sub_title}>{feat.title}</h2>
           <p>{feat.description}</p>
         </article>
