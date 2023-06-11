@@ -28,7 +28,6 @@ const isBrowser = typeof window !== "undefined";
 
 export const Contact = () => {
   const { register, handleSubmit, reset } = useForm<ContactForm>();
-
   const [alreadyContact, setAlreadyContact] = React.useState<boolean>(false);
 
   const [recaptcha, setRecaptcha] = React.useState("");
@@ -43,9 +42,13 @@ export const Contact = () => {
     }
   };
 
+  const canSubmit = React.useMemo(
+    () => isVerified && !!recaptcha,
+    [recaptcha, isVerified]
+  );
+
   const onSubmit: SubmitHandler<ContactForm> = async (data) => {
-    console.log({ isVerified, recaptcha });
-    if (isVerified && recaptcha) {
+    if (canSubmit) {
       setAlreadyContact(true);
       reset();
       localStorage.setItem("@wodful:contact_ok", JSON.stringify(true));
@@ -134,10 +137,10 @@ export const Contact = () => {
           />
 
           <ReCAPTCHA
-            sitekey={`${process.env.GATSBY_SIE_KEY}`}
-            onChange={() => onChange}
+            sitekey="6LcGoYsmAAAAACv_DA2VKjWLWtTqn04zNDTdVd5B"
+            onChange={(token) => onChange(token!)}
           />
-          <button type="submit" className={styles.button}>
+          <button disabled={!canSubmit} type="submit" className={styles.button}>
             Enviar
           </button>
         </form>
