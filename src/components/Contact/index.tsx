@@ -151,7 +151,7 @@ export const Contact = () => {
           />
 
           <ReCAPTCHA
-            sitekey="6LcGoYsmAAAAACv_DA2VKjWLWtTqn04zNDTdVd5B"
+            sitekey={`${process.env.GATSBY_SIE_KEY}`}
             onChange={(token) => onChange(token!)}
           />
           <button disabled={!canSubmit} type="submit" className={styles.button}>
