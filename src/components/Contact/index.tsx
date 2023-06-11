@@ -6,6 +6,8 @@ import CrossColab from "../../images/cross-colab.svg";
 import CheckLine from "./../../images/check-line.svg";
 import * as styles from "./styles.module.css";
 
+import ReCAPTCHA from "react-google-recaptcha";
+
 type ContactForm = {
   firstName: string;
   lastName: string;
@@ -29,30 +31,44 @@ export const Contact = () => {
 
   const [alreadyContact, setAlreadyContact] = React.useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<ContactForm> = async (data) => {
-    setAlreadyContact(true);
-    reset();
+  const [recaptcha, setRecaptcha] = React.useState("");
+  const [isVerified, setIsVerified] = React.useState<boolean>(false);
 
-    localStorage.setItem("@wodful:contact_ok", JSON.stringify(true));
-
-    if (isBrowser) {
-      typeof window !== "undefined" &&
-        window.gtag("event", "click", {
-          event_label: "contact_send",
-          content_type: "first_contact",
-          value: `${data.firstName} ${data.lastName} - ${data.email} - ${data.tel}`,
-          description: `${data.message}`,
-        });
+  const onChange = (token: string) => {
+    setRecaptcha(token);
+    if (token) {
+      setIsVerified(true);
+    } else {
+      setIsVerified(false);
     }
+  };
 
-    await addDoc(collection(db, "contacts"), {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      tel: data.tel,
-      email: data.email,
-      message: data.message,
-      timestamp: serverTimestamp(),
-    });
+  const onSubmit: SubmitHandler<ContactForm> = async (data) => {
+    console.log({ isVerified, recaptcha });
+    if (isVerified && recaptcha) {
+      setAlreadyContact(true);
+      reset();
+      localStorage.setItem("@wodful:contact_ok", JSON.stringify(true));
+
+      if (isBrowser) {
+        typeof window !== "undefined" &&
+          window.gtag("event", "click", {
+            event_label: "contact_send",
+            content_type: "first_contact",
+            value: `${data.firstName} ${data.lastName} - ${data.email} - ${data.tel}`,
+            description: `${data.message}`,
+          });
+      }
+
+      await addDoc(collection(db, "contacts"), {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        tel: data.tel,
+        email: data.email,
+        message: data.message,
+        timestamp: serverTimestamp(),
+      });
+    }
   };
 
   React.useEffect(() => {
@@ -117,6 +133,10 @@ export const Contact = () => {
             defaultValue={DEFAULT_VALUES.message}
           />
 
+          <ReCAPTCHA
+            sitekey={`${process.env.GATSBY_SIE_KEY}`}
+            onChange={() => onChange}
+          />
           <button type="submit" className={styles.button}>
             Enviar
           </button>
