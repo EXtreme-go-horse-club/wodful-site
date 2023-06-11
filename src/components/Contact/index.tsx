@@ -1,5 +1,7 @@
+import { addDoc, collection, serverTimestamp } from "@firebase/firestore";
 import * as React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { db } from "../../config/Firebase/firebase";
 import CrossColab from "../../images/cross-colab.svg";
 import CheckLine from "./../../images/check-line.svg";
 import * as styles from "./styles.module.css";
@@ -20,23 +22,37 @@ const DEFAULT_VALUES = {
   message: "",
 };
 
+const isBrowser = typeof window !== "undefined";
+
 export const Contact = () => {
   const { register, handleSubmit, reset } = useForm<ContactForm>();
 
   const [alreadyContact, setAlreadyContact] = React.useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<ContactForm> = (data) => {
+  const onSubmit: SubmitHandler<ContactForm> = async (data) => {
     setAlreadyContact(true);
     reset();
 
     localStorage.setItem("@wodful:contact_ok", JSON.stringify(true));
-    typeof window !== "undefined" &&
-      window.gtag("event", "click", {
-        event_label: "contact_send",
-        content_type: "first_contact",
-        value: `${data.firstName} ${data.lastName} - ${data.email} - ${data.tel}`,
-        description: `${data.message}`,
-      });
+
+    if (isBrowser) {
+      typeof window !== "undefined" &&
+        window.gtag("event", "click", {
+          event_label: "contact_send",
+          content_type: "first_contact",
+          value: `${data.firstName} ${data.lastName} - ${data.email} - ${data.tel}`,
+          description: `${data.message}`,
+        });
+    }
+
+    await addDoc(collection(db, "contacts"), {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      tel: data.tel,
+      email: data.email,
+      message: data.message,
+      timestamp: serverTimestamp(),
+    });
   };
 
   React.useEffect(() => {
