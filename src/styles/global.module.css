@@ -36,6 +36,11 @@ button:hover {
     cursor: pointer;
 }
 
+button:disabled {
+    background-color: var(--gray-400);
+    cursor: not-allowed;
+}
+
 a {
     color: var(--white);
     text-decoration: none;

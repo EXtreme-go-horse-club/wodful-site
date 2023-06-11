@@ -28,11 +28,12 @@ const isBrowser = typeof window !== "undefined";
 
 export const Contact = () => {
   const { register, handleSubmit, reset } = useForm<ContactForm>();
-
   const [alreadyContact, setAlreadyContact] = React.useState<boolean>(false);
 
   const [recaptcha, setRecaptcha] = React.useState("");
   const [isVerified, setIsVerified] = React.useState<boolean>(false);
+
+  const [fake_field, setFakeField] = React.useState("");
 
   const onChange = (token: string) => {
     setRecaptcha(token);
@@ -43,9 +44,18 @@ export const Contact = () => {
     }
   };
 
+  const canSubmit = React.useMemo(
+    () => isVerified && !!recaptcha,
+    [recaptcha, isVerified]
+  );
+
   const onSubmit: SubmitHandler<ContactForm> = async (data) => {
-    console.log({ isVerified, recaptcha });
-    if (isVerified && recaptcha) {
+    if (fake_field !== "") {
+      console.error("it's a bot!");
+      return;
+    }
+
+    if (canSubmit) {
       setAlreadyContact(true);
       reset();
       localStorage.setItem("@wodful:contact_ok", JSON.stringify(true));
@@ -93,6 +103,13 @@ export const Contact = () => {
             sistema.
           </p>
 
+          <input
+            type="hidden"
+            name="fake_field"
+            value={fake_field}
+            onChange={(e) => setFakeField(e.target.value)}
+          />
+
           <article className={styles.form_input}>
             <input
               required
@@ -135,9 +152,9 @@ export const Contact = () => {
 
           <ReCAPTCHA
             sitekey={`${process.env.GATSBY_SIE_KEY}`}
-            onChange={() => onChange}
+            onChange={(token) => onChange(token!)}
           />
-          <button type="submit" className={styles.button}>
+          <button disabled={!canSubmit} type="submit" className={styles.button}>
             Enviar
           </button>
         </form>
