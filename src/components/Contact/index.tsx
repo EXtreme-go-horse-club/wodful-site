@@ -33,6 +33,8 @@ export const Contact = () => {
   const [recaptcha, setRecaptcha] = React.useState("");
   const [isVerified, setIsVerified] = React.useState<boolean>(false);
 
+  const [fake_field, setFakeField] = React.useState("");
+
   const onChange = (token: string) => {
     setRecaptcha(token);
     if (token) {
@@ -48,6 +50,11 @@ export const Contact = () => {
   );
 
   const onSubmit: SubmitHandler<ContactForm> = async (data) => {
+    if (fake_field !== "") {
+      console.error("it's a bot!");
+      return;
+    }
+
     if (canSubmit) {
       setAlreadyContact(true);
       reset();
@@ -95,6 +102,13 @@ export const Contact = () => {
             Entre em contato com a nossa equipe para agendar uma demonstração do
             sistema.
           </p>
+
+          <input
+            type="hidden"
+            name="fake_field"
+            value={fake_field}
+            onChange={(e) => setFakeField(e.target.value)}
+          />
 
           <article className={styles.form_input}>
             <input
