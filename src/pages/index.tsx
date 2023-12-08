@@ -10,11 +10,13 @@ import { Header } from "../components/Header";
 import { Mobile } from "../components/Mobile";
 import { Head } from "../components/SEO";
 import "../styles/global.module.css";
+import { Content } from "../components/Content";
 
 const IndexPage: React.FC<PageProps> = () => {
   return (
     <Head>
       <Header />
+      <Content />
       <Feature />
       <Banner />
       <Benefits />
