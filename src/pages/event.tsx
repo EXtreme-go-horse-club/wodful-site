@@ -13,7 +13,6 @@ export default function EventDetails({ accessCode }: EventDetailsProps) {
     <Head>
       <Header />
       <EventData accessCode={accessCode}></EventData>
-      <div>Você está listando o {accessCode}</div>
       <Footer />
     </Head>
   );

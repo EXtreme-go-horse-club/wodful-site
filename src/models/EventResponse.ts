@@ -1,7 +1,7 @@
 export interface EventResponse {
   accessCode: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   banner: string;
   address: string;
   name: string;
@@ -10,7 +10,7 @@ export interface EventResponse {
 }
 
 export interface Ticket {
-  id: number;
+  id: string;
   description: string;
   price: string;
   name: string;

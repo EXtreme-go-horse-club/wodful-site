@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as styles from "./styles.module.css";
 import BannerImg from "../../images/teste.jpg";
-import { SubscriptionChoice } from "./Subscription";
+import { SubscriptionChoice } from "./SubscriptionChoice";
 import { useEffect, useState } from "react";
 import { EventService } from "../../services/events";
 import { EventResponse } from "../../models/EventResponse";
@@ -14,33 +14,15 @@ interface IEventData {
 
 export const EventData = ({ accessCode }: IEventData) => {
   const [event, setEvent] = useState<EventResponse>();
-  const [dates, setDates] = useState<String>("");
 
   const getEvent = React.useCallback(async (access: string) => {
     await new EventService()
       .getEvent(access)
       .then((eventResponse: EventResponse) => {
-        getStartEndDate(eventResponse.startDate, eventResponse.endDate);
         setEvent(eventResponse);
         console.log(eventResponse);
       });
   }, []);
-
-  const getStartEndDate = (startDate: Date, endDate: Date) => {
-    console.log(startDate);
-    if (startDate && endDate) {
-      startDate = new Date(startDate);
-      endDate = new Date(endDate);
-
-      let startDateMDY = `${startDate.getDate()}/${
-        startDate.getMonth() + 1
-      }/${startDate.getFullYear()}`;
-      let endDateMDY = `${endDate.getDate()}/${
-        endDate.getMonth() + 1
-      }/${endDate.getFullYear()}`;
-      setDates(startDateMDY + " até " + endDateMDY);
-    }
-  };
 
   useEffect(() => {
     getEvent(accessCode);
@@ -58,7 +40,9 @@ export const EventData = ({ accessCode }: IEventData) => {
             <h2>{event?.name}</h2>
             <div className={styles.event_info}>
               <img src={Calendar} alt="Data" />
-              <p>{dates}</p>
+              <p>
+                {event?.startDate} até {event?.endDate}
+              </p>
             </div>
             <div className={styles.event_info}>
               <img src={MapPin} alt="Localização" />
@@ -75,7 +59,10 @@ export const EventData = ({ accessCode }: IEventData) => {
           )}
         </section>
         {event?.tickets && (
-          <SubscriptionChoice tickets={event!.tickets}></SubscriptionChoice>
+          <SubscriptionChoice
+            tickets={event!.tickets}
+            accessCode={accessCode}
+          ></SubscriptionChoice>
         )}
       </main>
     </div>

@@ -1,0 +1,137 @@
+.container {
+  background-color: #fff;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+form {
+  width: 70%;
+}
+.form {
+  width: 60%;
+}
+.headding {
+  display: flex;
+}
+.title {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+}
+.right {
+  position: absolute;
+  right: 14%;
+  width: 225px;
+  margin-top: 64px;
+  border-radius: 8px;
+  background: var(--base-white, #fff);
+
+  /* Shadow/lg */
+  box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.05),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  /* left: 0px; */
+}
+.invalid {
+  border: 1px solid red;
+}
+input:focus {
+  outline: none;
+}
+.error {
+  color: red;
+}
+.right section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.right button {
+  padding: 8px;
+  width: 200px;
+  margin-bottom: 24px;
+}
+.rightTitle {
+  border-radius: 8px 8px 0px 0px;
+  background: var(--gray-gray-800, #1a202c);
+  color: #fff;
+  padding: 16px;
+}
+.tickets {
+  cursor: pointer;
+  padding: 24px 16px;
+  display: flex;
+  justify-content: space-between;
+}
+.tickets p {
+  color: #000;
+  max-width: 100%;
+}
+
+.event_data {
+  padding-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.event_info {
+  display: flex;
+  gap: 8px;
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.participants {
+  padding: 24px 0;
+  color: #000;
+  font-weight: bold;
+}
+
+.single {
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.double {
+  display: flex;
+  gap: 8px;
+}
+
+.double .single {
+  width: 50%;
+}
+
+.formContainer {
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 36px;
+  padding-top: 36px;
+}
+.formContainer:last-child {
+  border-bottom: 0px;
+}
+.formContainer:first-child {
+  padding-top: 0px;
+}
+
+@media screen and (max-width: 767px) {
+  .double {
+    flex-direction: column;
+  }
+  .double .single {
+    width: 100%;
+  }
+}
