@@ -1,6 +1,5 @@
 import { IParticipantForm } from "../../models/ParticipantDTO";
 import wodfulApi from "../api";
-import wodfulKey from "../key";
 
 export class SubscriptionService {
   constructor(private readonly path = "/public/events/subscriptions/") {}
@@ -8,7 +7,7 @@ export class SubscriptionService {
   async postSubscription(participants: IParticipantForm): Promise<any> {
     const event: any = await wodfulApi.post(this.path, participants, {
       headers: {
-        ["x-api-key"]: wodfulKey,
+        ["x-api-key"]: `${process.env.GATSBY_apiKey}`,
       },
     });
 

@@ -26,6 +26,7 @@
   display: flex;
   justify-content: space-between;
 }
+
 .tickets:last-child {
   border-bottom: 0px;
 }
@@ -34,6 +35,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   img {
     width: 24px;
     height: 24px;
@@ -41,6 +43,31 @@
 }
 
 .tickets p {
-  color: #000;
   max-width: 100%;
+
+  color: var(--gray-600);
+
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.tickets b {
+  color: #222;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px;
+}
+
+@media screen and (max-width: 767px) {
+  .right {
+
+    width: 74%;
+    position: inherit;
+    margin-top: 24px;
+  }
 }

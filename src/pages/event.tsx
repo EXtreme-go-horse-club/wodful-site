@@ -1,8 +1,6 @@
 import * as React from "react";
-import { Head } from "../components/SEO";
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
 import { EventData } from "../components/EventData";
+import { Head } from "../components/SEO";
 
 interface EventDetailsProps {
   accessCode: string;
@@ -11,9 +9,7 @@ interface EventDetailsProps {
 export default function EventDetails({ accessCode }: EventDetailsProps) {
   return (
     <Head>
-      <Header />
       <EventData accessCode={accessCode}></EventData>
-      <Footer />
     </Head>
   );
 }
