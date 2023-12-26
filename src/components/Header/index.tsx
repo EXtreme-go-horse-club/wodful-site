@@ -1,6 +1,5 @@
 import { Link } from "gatsby";
 import * as React from "react";
-import Sistem from "../../images/sistem.svg";
 import HeaderLogo from "../../images/wodful-logo.svg";
 import Hamburger from "../Hamburger";
 import * as styles from "./styles.module.css";
@@ -100,27 +99,6 @@ export const Header = () => {
           </button>
         </Link>
       </section>
-
-      <main>
-        <section className={styles.section}>
-          <article className={styles.container}>
-            <h1 className={styles.title}>Gerencie seu evento de Crossfit</h1>
-            <p className={styles.text}>
-              Eleve o nível do seu evento de CrossFit com o
-              <strong> Sistema de Scoreboard </strong>
-              inovador da Wodful e acompanhe o andamento da sua competição de
-              qualquer lugar em tempo real
-            </p>
-            <Link to="#contact">
-              <button className={styles.button_cta} type="button">
-                Entrar em contato
-              </button>
-            </Link>
-          </article>
-
-          <img src={Sistem} className={styles.capa} alt="Capa do sistema" />
-        </section>
-      </main>
     </section>
   );
 };
