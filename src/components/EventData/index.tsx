@@ -1,12 +1,12 @@
 import * as React from "react";
-import * as styles from "./styles.module.css";
-import BannerImg from "../../images/teste.jpg";
-import { SubscriptionChoice } from "./SubscriptionChoice";
 import { useEffect, useState } from "react";
-import { EventService } from "../../services/events";
-import { EventResponse } from "../../models/EventResponse";
-import MapPin from "../../images/map-pin.svg";
 import Calendar from "../../images/calendar-black.svg";
+import MapPin from "../../images/map-pin.svg";
+import BannerImg from "../../images/teste.jpg";
+import { EventResponse } from "../../models/EventResponse";
+import { EventService } from "../../services/events";
+import { SubscriptionChoice } from "./SubscriptionChoice";
+import * as styles from "./styles.module.css";
 
 interface IEventData {
   accessCode: string;
@@ -39,20 +39,30 @@ export const EventData = ({ accessCode }: IEventData) => {
           <article className={styles.event_data}>
             <h2>{event?.name}</h2>
             <div className={styles.event_info}>
-              <img src={Calendar} alt="Data" />
-              <p>
+              <img
+                src={Calendar}
+                alt="ícone de calendário, mostrando a data do evento"
+                height={16}
+                width={16}
+              />
+              <p className={styles.paragraph}>
                 {event?.startDate} até {event?.endDate}
               </p>
             </div>
             <div className={styles.event_info}>
-              <img src={MapPin} alt="Localização" />
-              <p>{event?.address}</p>
+              <img
+                src={MapPin}
+                alt="ícone de localização do evento"
+                height={16}
+                width={16}
+              />
+              <p className={styles.paragraph}>{event?.address}</p>
             </div>
           </article>
           {event?.description ? (
             <article>
               <h3>Descrição</h3>
-              <p>{event?.description}</p>
+              <p className={styles.paragraph}>{event?.description}</p>
             </article>
           ) : (
             <article className={styles.blank}></article>
