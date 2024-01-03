@@ -5,7 +5,6 @@
   flex-direction: column;
   width: 100%;
   align-items: center;
-  /* justify-content: center; */
 }
 
 form {
@@ -223,6 +222,10 @@ input {
   }
 
   .event_data {
-    padding-top: 0px;
+    padding-top: 16px;
+
+    h2 {
+      font-size: 28px;
+    }
   }
 }

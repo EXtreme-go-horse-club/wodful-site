@@ -4,6 +4,10 @@ import HeaderLogo from "../../images/wodful-logo.svg";
 import Hamburger from "../Hamburger";
 import * as styles from "./styles.module.css";
 
+interface IHeaderProps {
+  isSimple?: boolean;
+}
+
 type NavLinks = {
   to: string;
   description: string;
@@ -22,7 +26,7 @@ const navLinks: NavLinks[] = [
 
 const isBrowser = typeof window !== "undefined";
 
-export const Header = () => {
+export const Header = ({ isSimple = false }: IHeaderProps) => {
   const [hamburgerOpen, setHamburgerOpen] = React.useState(false);
 
   if (isBrowser) {
@@ -53,34 +57,44 @@ export const Header = () => {
   };
   return (
     <section className={styles.container_size}>
-      <header className={styles.header}>
-        <Link to="#">
-          <img src={HeaderLogo} alt="Wodful logo" />
-        </Link>
+      <header className={`${isSimple ? styles.simpleHeader : styles.header}`}>
+        {isSimple && (
+          <a href="https://wodful.com">
+            <img src={HeaderLogo} alt="Wodful logo" />
+          </a>
+        )}
 
-        <article>
-          <nav className={styles.space}>
-            {navLinks.map((link) => (
-              <Link key={link.description} to={link.to}>
-                {link.description}
-              </Link>
-            ))}
-          </nav>
-        </article>
-
-        <article className={styles.space}>
-          {/* <Link target="_blank" to="https://app.wodful.com/login">
+        {!isSimple && (
+          <Link to="#">
+            <img src={HeaderLogo} alt="Wodful logo" />
+          </Link>
+        )}
+        {!isSimple && (
+          <>
+            <article>
+              <nav className={styles.space}>
+                {navLinks.map((link) => (
+                  <Link key={link.description} to={link.to}>
+                    {link.description}
+                  </Link>
+                ))}
+              </nav>
+            </article>
+            <article className={styles.space}>
+              {/* <Link target="_blank" to="https://app.wodful.com/login">
             Acesse
           </Link> */}
-          <Link to="#contact">
-            <button className={styles.button_header} type="button">
-              Entrar em contato
-            </button>
-          </Link>
-        </article>
-        <div onClick={toggleHamburger} className={styles.hamburger}>
-          <Hamburger isOpen={hamburgerOpen} />
-        </div>
+              <Link to="#contact">
+                <button className={styles.button_header} type="button">
+                  Entrar em contato
+                </button>
+              </Link>
+            </article>
+            <div onClick={toggleHamburger} className={styles.hamburger}>
+              <Hamburger isOpen={hamburgerOpen} />
+            </div>
+          </>
+        )}
       </header>
 
       <section className={hamburgerOpen ? styles.hamburger_menu : styles.none}>

@@ -30,35 +30,34 @@ export const EventData = ({ accessCode }: IEventData) => {
 
   return (
     <div className={styles.container}>
-      <img src={BannerImg} className={styles.background}></img>
-      <div className={styles.banner}>
-        <img src={BannerImg} alt="banner" />
-      </div>
+      <div className={styles.banner} />
+      <img src={BannerImg} className={styles.background} />
+
       <main className={styles.main}>
+        <section className={styles.event_data}>
+          <h2>{event?.name}</h2>
+          <div className={styles.event_info}>
+            <img
+              src={Calendar}
+              alt="ícone de calendário, mostrando a data do evento"
+              height={16}
+              width={16}
+            />
+            <p className={styles.paragraph}>
+              {event?.startDate} até {event?.endDate}
+            </p>
+          </div>
+          <div className={styles.event_info}>
+            <img
+              src={MapPin}
+              alt="ícone de localização do evento"
+              height={16}
+              width={16}
+            />
+            <p className={styles.paragraph}>{event?.address}</p>
+          </div>
+        </section>
         <section className={styles.left}>
-          <article className={styles.event_data}>
-            <h2>{event?.name}</h2>
-            <div className={styles.event_info}>
-              <img
-                src={Calendar}
-                alt="ícone de calendário, mostrando a data do evento"
-                height={16}
-                width={16}
-              />
-              <p className={styles.paragraph}>
-                {event?.startDate} até {event?.endDate}
-              </p>
-            </div>
-            <div className={styles.event_info}>
-              <img
-                src={MapPin}
-                alt="ícone de localização do evento"
-                height={16}
-                width={16}
-              />
-              <p className={styles.paragraph}>{event?.address}</p>
-            </div>
-          </article>
           {event?.description ? (
             <article>
               <h3>Descrição</h3>

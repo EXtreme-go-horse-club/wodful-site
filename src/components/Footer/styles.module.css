@@ -1,10 +1,18 @@
 .container_footer {
-
-
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 2rem 0rem;
+
+    margin: auto;
+    width: 80%;
+}
+
+.simple_footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0rem;
 
     margin: auto;
     width: 80%;

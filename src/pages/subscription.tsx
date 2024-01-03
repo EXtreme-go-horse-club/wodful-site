@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Head } from "../components/SEO";
-import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import { Header } from "../components/Header";
+import { Head } from "../components/SEO";
 import { SubscriptionData } from "../components/Subscription";
 
 interface EventDetailsProps {
@@ -11,9 +11,9 @@ interface EventDetailsProps {
 export default function EventSubscriptions({ accessCode }: EventDetailsProps) {
   return (
     <Head>
-      <Header />
+      <Header isSimple />
       <SubscriptionData accessCode={accessCode}></SubscriptionData>
-      <Footer />
+      <Footer isSimple />
     </Head>
   );
 }

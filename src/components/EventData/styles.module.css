@@ -1,19 +1,40 @@
 .container {
   background-color: #fff;
   color: #000;
+  position: relative;
+  height: 84vh;
+}
+
+.banner {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #060919;
 }
 
 .background {
-  position: relative;
-  filter: blur(2px);
-  -webkit-filter: blur(2px);
+  display: flex;
+  border-radius: 8px;
+  width: 880px;
+  height: 320px;
+  margin: auto;
+  top: 20px;
+  right: 14%;
+  left: 14%;
+  position: absolute;
   object-fit: cover;
   object-position: top;
-  width: 100%;
-  height: 291px;
-  box-shadow: inset 0 0 0 1000px rgba(26, 32, 44, 0.9);
+
+}
+
+.main {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  width: 880px;
+  margin: auto;
 }
 
 p {
@@ -22,29 +43,6 @@ p {
 
 }
 
-.banner {
-  top: 24px;
-  width: 100%;
-  height: 291px;
-  overflow: hidden;
-  position: absolute;
-}
-
-.banner img {
-  display: block;
-  border-radius: 8px;
-  width: 72%;
-  height: auto;
-  margin: auto;
-  bottom: 0;
-}
-
-.main {
-  display: flex;
-  height: 70vh;
-  align-items: center;
-  flex-direction: column;
-}
 
 .left {
   width: 72%;
@@ -55,6 +53,8 @@ p {
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  width: 72%;
 }
 
 .event_info {
@@ -91,10 +91,24 @@ p {
   line-height: 18px;
 }
 
-@media screen and (min-width: 768px) and (max-width: 1023px) {
+@media screen and (min-width: 768px) and (max-width: 1224px) {
   .capa {
     display: none;
   }
+
+  .background {
+    width: 660px;
+
+    right: 10%;
+    left: 10%;
+  }
+
+  .main {
+    width: 660px;
+    right: 10%;
+    left: 10%;
+  }
+
 }
 
 @media screen and (max-width: 767px) {
@@ -102,18 +116,30 @@ p {
     display: none;
   }
 
+  .container {
+    height: auto;
+  }
+
+  .background {
+    width: 100%;
+    right: 0%;
+    left: 0%;
+    top: 0px;
+    border-radius: 0;
+  }
+
   .main {
+    width: 80%;
+
+    right: 10%;
+    left: 10%;
     height: auto;
     padding: 24px 0px;
   }
 
 
-  .banner img {
-    width: 90%;
-  }
-
   .event_data {
-    padding-top: 0px;
-
+    width: 100%;
   }
+
 }
