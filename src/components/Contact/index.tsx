@@ -52,6 +52,12 @@ export const Contact = () => {
   const onSubmit: SubmitHandler<ContactForm> = async (data) => {
     if (fake_field !== "") {
       console.error("it's a bot!");
+      window.gtag("event", "click", {
+        event_label: "bot_detected",
+        content_type: "bot_detected_on_contact",
+        value: `bot_detected_on_contact`,
+        description: `bot_detected_on_contact`,
+      });
       return;
     }
 
