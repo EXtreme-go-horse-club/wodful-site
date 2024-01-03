@@ -11,12 +11,15 @@
 form {
   width: 70%;
 }
+
 .form {
   width: 60%;
 }
-.headding {
+
+.heading {
   display: flex;
 }
+
 .title {
   width: 60%;
   display: flex;
@@ -24,14 +27,18 @@ form {
   padding-bottom: 40px;
   border-bottom: 1px solid #e2e8f0;
 }
+
 .main {
   display: flex;
   flex-direction: column;
+  margin-bottom: 50px;
 }
+
 .right {
   position: absolute;
   right: 14%;
-  width: 225px;
+  width: auto;
+  max-width: 375px;
   margin-top: 64px;
   border-radius: 8px;
   background: var(--base-white, #fff);
@@ -41,37 +48,50 @@ form {
     0px 10px 15px -3px rgba(0, 0, 0, 0.1);
   /* left: 0px; */
 }
+
 .invalid {
   border: 1px solid red;
 }
+
 input:focus {
   outline: none;
 }
+
+input {
+  outline: none;
+  color: var(--gray-700, #2D3748)
+}
+
 .error {
   color: red;
 }
+
 .right section {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .right button {
   padding: 8px;
   width: 200px;
   margin-bottom: 24px;
 }
+
 .rightTitle {
   border-radius: 8px 8px 0px 0px;
-  background: var(--gray-gray-800, #1a202c);
+  background: var(--gray-800, #1a202c);
   color: #fff;
   padding: 16px;
 }
+
 .tickets {
   cursor: pointer;
   padding: 24px 16px;
   display: flex;
   justify-content: space-between;
 }
+
 .tickets p {
   color: #000;
   max-width: 100%;
@@ -82,19 +102,42 @@ input:focus {
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  h2 {
+    font-size: 36px;
+    text-transform: uppercase;
+  }
 }
 
 .event_info {
   display: flex;
   gap: 8px;
+  align-items: center;
+
   img {
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
   }
 }
 
-.participants {
+.paragraph {
+  color: var(--gray-600);
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+
+.responsible {
   padding: 24px 0;
+  color: #000;
+  font-weight: bold;
+}
+
+.participants {
+  padding: 24px 0 0 0;
   color: #000;
   font-weight: bold;
 }
@@ -104,6 +147,15 @@ input:focus {
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  label {
+    color: var(--gray-700, #2D3748);
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+  }
 }
 
 .double {
@@ -120,18 +172,57 @@ input:focus {
   padding-bottom: 36px;
   padding-top: 36px;
 }
+
 .formContainer:last-child {
   border-bottom: 0px;
 }
+
 .formContainer:first-child {
   padding-top: 0px;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 912px) {
+
+  form {
+    position: relative;
+    width: 80%;
+    padding-bottom: 50%;
+    margin-bottom: 15%;
+  }
+
+  .right {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin-top: 0px;
+
+  }
+
+  .form {
+    width: 100%;
+  }
+
+  .title {
+    width: 100%;
+  }
+
   .double {
     flex-direction: column;
   }
+
   .double .single {
     width: 100%;
+    padding: 8px 0;
+    gap: 6px;
+  }
+
+  .formContainer {
+    padding-bottom: 24px;
+    padding-top: 24px;
+  }
+
+  .event_data {
+    padding-top: 0px;
   }
 }
