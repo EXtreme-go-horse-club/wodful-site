@@ -1,7 +1,7 @@
 .right {
   position: absolute;
-  right: 14%;
-  width: 225px;
+  left: 57%;
+  width: 325px;
   margin-top: 64px;
   border-radius: 8px;
   background: var(--base-white, #fff);
@@ -36,6 +36,8 @@
   align-items: center;
   justify-content: center;
 
+  gap: 16px;
+
   img {
     width: 24px;
     height: 24px;
@@ -63,11 +65,33 @@
   line-height: 18px;
 }
 
-@media screen and (max-width: 767px) {
+
+
+@media screen and (max-width: 1224px) {
   .right {
 
-    width: 74%;
+    width: 72%;
     position: inherit;
     margin-top: 24px;
   }
+
+
+  .icon {
+    gap: 24px;
+  }
+
+}
+
+@media screen and (max-width: 468px) {
+  .right {
+    width: 100%;
+    position: inherit;
+    margin-top: 24px;
+  }
+
+
+  .icon {
+    gap: 12px;
+  }
+
 }

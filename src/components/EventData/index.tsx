@@ -1,8 +1,8 @@
+import { navigate } from "gatsby";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import Calendar from "../../images/calendar-black.svg";
 import MapPin from "../../images/map-pin.svg";
-import BannerImg from "../../images/teste.jpg";
 import { EventResponse } from "../../models/EventResponse";
 import { EventService } from "../../services/events";
 import { SubscriptionChoice } from "./SubscriptionChoice";
@@ -20,8 +20,8 @@ export const EventData = ({ accessCode }: IEventData) => {
       .getEvent(access)
       .then((eventResponse: EventResponse) => {
         setEvent(eventResponse);
-        console.log(eventResponse);
-      });
+      })
+      .catch(() => navigate("/404"));
   }, []);
 
   useEffect(() => {
@@ -30,35 +30,39 @@ export const EventData = ({ accessCode }: IEventData) => {
 
   return (
     <div className={styles.container}>
-      <img src={BannerImg} className={styles.background}></img>
-      <div className={styles.banner}>
-        <img src={BannerImg} alt="banner" />
-      </div>
+      <div className={styles.banner} />
+      {event?.banner && (
+        <img
+          src={`${process.env.GATSBY_BASE_SERVER_URL}/banner/${event.banner}`}
+          className={styles.background}
+        />
+      )}
+
       <main className={styles.main}>
+        <section className={styles.event_data}>
+          <h2>{event?.name.toLocaleUpperCase()}</h2>
+          <div className={styles.event_info}>
+            <img
+              src={Calendar}
+              alt="ícone de calendário, mostrando a data do evento"
+              height={16}
+              width={16}
+            />
+            <p className={styles.paragraph}>
+              {event?.startDate} até {event?.endDate}
+            </p>
+          </div>
+          <div className={styles.event_info}>
+            <img
+              src={MapPin}
+              alt="ícone de localização do evento"
+              height={16}
+              width={16}
+            />
+            <p className={styles.paragraph}>{event?.address}</p>
+          </div>
+        </section>
         <section className={styles.left}>
-          <article className={styles.event_data}>
-            <h2>{event?.name}</h2>
-            <div className={styles.event_info}>
-              <img
-                src={Calendar}
-                alt="ícone de calendário, mostrando a data do evento"
-                height={16}
-                width={16}
-              />
-              <p className={styles.paragraph}>
-                {event?.startDate} até {event?.endDate}
-              </p>
-            </div>
-            <div className={styles.event_info}>
-              <img
-                src={MapPin}
-                alt="ícone de localização do evento"
-                height={16}
-                width={16}
-              />
-              <p className={styles.paragraph}>{event?.address}</p>
-            </div>
-          </article>
           {event?.description ? (
             <article>
               <h3>Descrição</h3>
@@ -68,12 +72,11 @@ export const EventData = ({ accessCode }: IEventData) => {
             <article className={styles.blank}></article>
           )}
         </section>
-        {event?.tickets && (
-          <SubscriptionChoice
-            tickets={event!.tickets}
-            accessCode={accessCode}
-          ></SubscriptionChoice>
-        )}
+        <SubscriptionChoice
+          tickets={event?.tickets}
+          accessCode={accessCode}
+          isFinished={event?.isFinished}
+        ></SubscriptionChoice>
       </main>
     </div>
   );

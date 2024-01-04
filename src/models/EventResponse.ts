@@ -7,6 +7,7 @@ export interface EventResponse {
   name: string;
   description: string | null;
   tickets: Ticket[];
+  isFinished: boolean;
 }
 
 export interface Ticket {

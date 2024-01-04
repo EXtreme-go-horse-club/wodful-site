@@ -1,22 +1,24 @@
-import * as React from "react";
-import * as styles from "./styles.module.css";
-import MapPin from "../../images/map-pin.svg";
-import Calendar from "../../images/calendar-black.svg";
-import { EventResponse, Ticket } from "../../models/EventResponse";
-import { EventService } from "../../services/events";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { IParticipantForm } from "../../models/ParticipantDTO";
 import { navigate } from "gatsby";
-import { isValidDocument, regexOnlyNumber } from "../../utils";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useForm } from "react-hook-form";
+import Calendar from "../../images/calendar-black.svg";
+import MapPin from "../../images/map-pin.svg";
+import { EventResponse, Ticket } from "../../models/EventResponse";
+import { IParticipantForm } from "../../models/ParticipantDTO";
+import { EventService } from "../../services/events";
 import { SubscriptionService } from "../../services/subscription";
+import { isValidDocument, regexOnlyNumber } from "../../utils";
+import * as styles from "./styles.module.css";
 
+import ArrowRight from "../../images/arrow-right.svg";
 interface ISubscriptionData {
   accessCode: string;
 }
 const Validation = {
-  invalidEmpty: "Preencher campo",
-  invalid: "Campo inválido",
+  invalidEmpty: "Campo obrigatório",
+  invalid: "Valor inválido",
   invalidSM: "Muito curto",
   invalidLG: "Muito longo",
 };
@@ -29,10 +31,35 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     register,
     setValue,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<IParticipantForm>({
-    mode: "onChange",
+    mode: "all",
   });
+
+  const [recaptcha, setRecaptcha] = React.useState("");
+  const [isVerified, setIsVerified] = React.useState<boolean>(false);
+  const [fake_field, setFakeField] = React.useState("");
+
+  const onChange = (token: string) => {
+    setRecaptcha(token);
+    if (token) {
+      setIsVerified(true);
+    } else {
+      setIsVerified(false);
+    }
+  };
+
+  const canSubmit = React.useMemo(
+    () =>
+      isVerified &&
+      !!recaptcha &&
+      !fake_field &&
+      (!errors.nickname ||
+        !errors.responsibleName ||
+        !errors.responsibleEmail ||
+        !errors.responsiblePhone),
+    [recaptcha, isVerified]
+  );
 
   const getEvent = React.useCallback(
     async (access: string, ticketId: string) => {
@@ -45,7 +72,6 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
           );
           setEvent(eventResponse);
           setTicket(singleTicket);
-          console.log(singleTicket);
           for (let index = 0; index < singleTicket!.category.members; index++) {
             setIndexes((indexes) => [...indexes, index]);
           }
@@ -58,14 +84,23 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     async (subscription: IParticipantForm) => {
       await new SubscriptionService()
         .postSubscription(subscription)
-        .then((response: any) => {
-          console.log(response);
-        });
+        .then((response: any) => {});
     },
     []
   );
 
   const onSubmit = (subscription: IParticipantForm) => {
+    if (fake_field !== "") {
+      console.error("it's a bot!");
+      window.gtag("event", "click", {
+        event_label: "bot_detected",
+        content_type: "bot_detected_on_subscription",
+        value: `bot_detected_on_subscription`,
+        description: `bot_detected_on_subscription`,
+      });
+      return;
+    }
+
     subscription.ticketId = ticket!.id;
     PostSubscription(subscription);
   };
@@ -85,20 +120,49 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          type="hidden"
+          name="fake_field"
+          value={fake_field}
+          onChange={(e) => setFakeField(e.target.value)}
+        />
         <main className={styles.main}>
-          <div className={styles.headding}>
+          <div className={styles.heading}>
             <section className={styles.title}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginTop: "16px",
+                }}
+              >
+                <img
+                  src={ArrowRight}
+                  style={{
+                    width: "32px",
+                    transform: "rotate(180deg)",
+                    cursor: "pointer",
+                  }}
+                  alt="Seguir para inscrição"
+                  role="button"
+                  onClick={() => navigate(`/event/${accessCode}/`)}
+                />
+                <p className={styles.paragraph}>Voltar</p>
+              </div>
               <article className={styles.event_data}>
                 <h2>{event?.name}</h2>
                 <div className={styles.event_info}>
-                  <img src={Calendar} alt="Data" />
-                  <p>
+                  <img
+                    src={Calendar}
+                    alt="ícone de calendário, mostrando a data do evento"
+                  />
+                  <p className={styles.paragraph}>
                     {event?.startDate} até {event?.endDate}
                   </p>
                 </div>
                 <div className={styles.event_info}>
-                  <img src={MapPin} alt="Localização" />
-                  <p>{event?.address}</p>
+                  <img src={MapPin} alt="ícone de localização do evento" />
+                  <p className={styles.paragraph}>{event?.address}</p>
                 </div>
               </article>
             </section>
@@ -113,30 +177,36 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                     <p>{ticket?.description}</p>
                   </div>
                 </article>
-                <button type="submit">Enviar</button>
+
+                <button disabled={!canSubmit} type="submit">
+                  Enviar
+                </button>
               </section>
             </section>
           </div>
           {ticket && (
             <div className={styles.form}>
-              <p className={styles.participants}>
-                {ticket.category.members > 1
-                  ? "Dados dos participantes"
-                  : "Dados do participante"}
-              </p>
+              <p className={styles.responsible}>Dados do responsável</p>
               <div className={styles.single}>
-                <label htmlFor="nickname">Nome</label>
+                <label htmlFor="nickname">
+                  {ticket!.category.members > 1
+                    ? "Nome do time"
+                    : "Nome ou Apelido"}
+                </label>
                 <input
                   className={!!errors.nickname ? styles.invalid : ""}
+                  autoFocus
                   id="nickname"
                   placeholder={
-                    ticket!.category.members > 1 ? "Nome do time" : "Apelido"
+                    ticket!.category.members > 1
+                      ? "Wodful team"
+                      : "João da silva"
                   }
                   type="text"
                   {...register("nickname", {
                     required: Validation.invalidEmpty,
                     minLength: {
-                      value: 4,
+                      value: 3,
                       message: Validation.invalidSM,
                     },
                     maxLength: {
@@ -154,12 +224,12 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                 <input
                   className={!!errors.responsibleName ? styles.invalid : ""}
                   id="responsibleName"
-                  placeholder="Nome do responsável"
+                  placeholder="João da silva"
                   type="text"
                   {...register("responsibleName", {
                     required: Validation.invalidEmpty,
                     minLength: {
-                      value: 4,
+                      value: 3,
                       message: Validation.invalidSM,
                     },
                     maxLength: {
@@ -180,7 +250,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                   <input
                     className={!!errors.responsibleEmail ? styles.invalid : ""}
                     id="responsibleEmail"
-                    placeholder="E-mail do responsável"
+                    placeholder="joao@email.com"
                     type="email"
                     {...register("responsibleEmail", {
                       required: Validation.invalidEmpty,
@@ -209,16 +279,16 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                   <input
                     className={!!errors.responsiblePhone ? styles.invalid : ""}
                     id="responsiblePhone"
-                    placeholder="Número do telefone"
-                    type="text"
+                    placeholder="xx x xxxx-xxxx"
+                    type="tel"
                     {...register("responsiblePhone", {
                       required: Validation.invalidEmpty,
                       minLength: {
-                        value: 4,
+                        value: 9,
                         message: Validation.invalidSM,
                       },
                       maxLength: {
-                        value: 50,
+                        value: 13,
                         message: Validation.invalidLG,
                       },
                       onChange(event) {
@@ -231,6 +301,11 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                   </span>
                 </div>
               </section>
+              <p className={styles.participants}>
+                {ticket.category.members > 1
+                  ? "Dados dos participantes"
+                  : "Dados do participante"}
+              </p>
               {indexes.map((index) => {
                 const participants = `participants[${index}]`;
                 return (
@@ -247,7 +322,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                             ? styles.invalid
                             : ""
                         }
-                        placeholder="Nome do participante"
+                        placeholder="João da silva"
                         type="text"
                         {...register(`participants.${index}.name`, {
                           required: Validation.invalidEmpty,
@@ -274,8 +349,14 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                         </label>
                         <input
                           id={`${participants}.identificationCode`}
-                          placeholder="Informe o RG ou CPF"
-                          type="text"
+                          className={
+                            !!errors.participants &&
+                            !!errors.participants![index]?.identificationCode
+                              ? styles.invalid
+                              : ""
+                          }
+                          placeholder="RG ou CPF"
+                          type="tel"
                           {...register(
                             `participants.${index}.identificationCode`,
                             {
@@ -293,6 +374,12 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                             }
                           )}
                         />
+                        <span className={styles.error}>
+                          {errors.participants &&
+                            errors.participants![index]?.identificationCode &&
+                            errors.participants![index]?.identificationCode
+                              ?.message}
+                        </span>
                       </div>
                       <div className={styles.single}>
                         <label htmlFor={`${participants}.tShirtSize`}>
@@ -300,7 +387,13 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                         </label>
                         <input
                           id={`${participants}.tShirtSize`}
-                          placeholder="Tamanho"
+                          placeholder="GG"
+                          className={
+                            !!errors.participants &&
+                            !!errors.participants![index]?.tShirtSize
+                              ? styles.invalid
+                              : ""
+                          }
                           type="text"
                           {...register(`participants.${index}.tShirtSize`, {
                             required: Validation.invalidEmpty,
@@ -309,11 +402,16 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                               message: Validation.invalidSM,
                             },
                             maxLength: {
-                              value: 10,
+                              value: 4,
                               message: Validation.invalidLG,
                             },
                           })}
                         />
+                        <span className={styles.error}>
+                          {errors.participants &&
+                            errors.participants![index]?.tShirtSize &&
+                            errors.participants![index]?.tShirtSize?.message}
+                        </span>
                       </div>
                     </section>
                     <section className={styles.double}>
@@ -321,7 +419,13 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                         <label htmlFor={`${participants}.city`}>Cidade</label>
                         <input
                           id={`${participants}.city`}
-                          placeholder="Cidade do participante"
+                          className={
+                            !!errors.participants &&
+                            !!errors.participants![index]?.city
+                              ? styles.invalid
+                              : ""
+                          }
+                          placeholder="Rua barbacena, Paraná"
                           type="text"
                           {...register(`participants.${index}.city`, {
                             required: Validation.invalidEmpty,
@@ -335,15 +439,26 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                             },
                           })}
                         />
+                        <span className={styles.error}>
+                          {errors.participants &&
+                            errors.participants![index]?.city &&
+                            errors.participants![index]?.city?.message}
+                        </span>
                       </div>
                       <div className={styles.single}>
                         <label htmlFor={`${participants}.affiliation`}>
-                          Box
+                          Box do participante
                         </label>
                         <input
                           id={`${participants}.affiliation`}
-                          placeholder="Box do participante"
+                          placeholder="CT Wodful"
                           type="text"
+                          className={
+                            !!errors.participants &&
+                            !!errors.participants![index]?.affiliation
+                              ? styles.invalid
+                              : ""
+                          }
                           {...register(`participants.${index}.affiliation`, {
                             required: Validation.invalidEmpty,
                             minLength: {
@@ -356,6 +471,11 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                             },
                           })}
                         />
+                        <span className={styles.error}>
+                          {errors.participants &&
+                            errors.participants![index]?.affiliation &&
+                            errors.participants![index]?.affiliation?.message}
+                        </span>
                       </div>
                     </section>
                   </div>
@@ -363,6 +483,11 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
               })}
             </div>
           )}
+          <ReCAPTCHA
+            sitekey={`${process.env.GATSBY_SIE_KEY}`}
+            onChange={(token) => onChange(token!)}
+            size="normal"
+          />
         </main>
       </form>
     </div>
