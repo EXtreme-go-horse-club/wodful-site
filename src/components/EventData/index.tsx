@@ -33,7 +33,7 @@ export const EventData = ({ accessCode }: IEventData) => {
       <div className={styles.banner} />
       {event?.banner && (
         <img
-          src={`http://localhost:3333/banner/${event.banner}`}
+          src={`${process.env.GATSBY_BASE_SERVER_URL}/banner/${event.banner}`}
           className={styles.background}
         />
       )}

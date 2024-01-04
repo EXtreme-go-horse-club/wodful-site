@@ -484,7 +484,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
             </div>
           )}
           <ReCAPTCHA
-            sitekey="6LcGoYsmAAAAACv_DA2VKjWLWtTqn04zNDTdVd5B"
+            sitekey={`${process.env.GATSBY_SIE_KEY}`}
             onChange={(token) => onChange(token!)}
             size="normal"
           />
