@@ -28,7 +28,7 @@ export const Footer = ({ isSimple = false }: IFooterProps) => {
     <footer
       className={`${isSimple ? styles.simple_footer : styles.container_footer}`}
     >
-      {isSimple && (
+      {!isSimple && (
         <a href="https://wodful.com">
           <img src={HeaderLogo} alt="Wodful logo" />
         </a>

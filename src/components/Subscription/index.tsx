@@ -12,6 +12,7 @@ import { SubscriptionService } from "../../services/subscription";
 import { isValidDocument, regexOnlyNumber } from "../../utils";
 import * as styles from "./styles.module.css";
 
+import ArrowRight from "../../images/arrow-right.svg";
 interface ISubscriptionData {
   accessCode: string;
 }
@@ -71,7 +72,6 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
           );
           setEvent(eventResponse);
           setTicket(singleTicket);
-          console.log(singleTicket);
           for (let index = 0; index < singleTicket!.category.members; index++) {
             setIndexes((indexes) => [...indexes, index]);
           }
@@ -84,9 +84,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     async (subscription: IParticipantForm) => {
       await new SubscriptionService()
         .postSubscription(subscription)
-        .then((response: any) => {
-          console.log(response);
-        });
+        .then((response: any) => {});
     },
     []
   );
@@ -131,6 +129,26 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
         <main className={styles.main}>
           <div className={styles.heading}>
             <section className={styles.title}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginTop: "16px",
+                }}
+              >
+                <img
+                  src={ArrowRight}
+                  style={{
+                    width: "32px",
+                    transform: "rotate(180deg)",
+                    cursor: "pointer",
+                  }}
+                  alt="Seguir para inscrição"
+                  role="button"
+                  onClick={() => navigate(`/event/${accessCode}/`)}
+                />
+                <p className={styles.paragraph}>Voltar</p>
+              </div>
               <article className={styles.event_data}>
                 <h2>{event?.name}</h2>
                 <div className={styles.event_info}>
@@ -466,7 +484,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
             </div>
           )}
           <ReCAPTCHA
-            sitekey={`${process.env.GATSBY_SIE_KEY}`}
+            sitekey="6LcGoYsmAAAAACv_DA2VKjWLWtTqn04zNDTdVd5B"
             onChange={(token) => onChange(token!)}
             size="normal"
           />

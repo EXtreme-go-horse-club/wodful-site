@@ -97,7 +97,7 @@ input {
 }
 
 .event_data {
-  padding-top: 36px;
+
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -222,7 +222,6 @@ input {
   }
 
   .event_data {
-    padding-top: 16px;
 
     h2 {
       font-size: 28px;

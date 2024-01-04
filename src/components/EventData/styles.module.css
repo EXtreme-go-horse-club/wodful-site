@@ -2,7 +2,7 @@
   background-color: #fff;
   color: #000;
   position: relative;
-  height: 84vh;
+  height: 86vh;
 }
 
 .banner {
@@ -134,12 +134,13 @@ p {
     right: 10%;
     left: 10%;
     height: auto;
-    padding: 24px 0px;
+    padding: 32px 0px;
   }
 
 
   .event_data {
     width: 100%;
+    padding-top: 0px;
   }
 
 }
