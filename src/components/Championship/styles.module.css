@@ -1,0 +1,96 @@
+.container {
+  padding: 5rem 0;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  font-family: Inter;
+  margin: auto;
+  width: 80%;
+}
+
+.container h1 {
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 23px;
+}
+
+.section {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  justify-content: space-between;
+}
+
+.championship {
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid var(--Gray-Gray200, #e2e8f0);
+  background: #fff;
+  width: 400px;
+  height: 236px;
+}
+
+.championship img {
+  width: 400px;
+  height: 100px;
+  object-fit: cover;
+  position: absolute;
+}
+
+.available {
+  position: relative;
+  left: 65%;
+  top: 81px;
+  border-radius: 6px;
+  background: #319795;
+  padding: 2px 8px;
+}
+
+.notAvailable {
+  position: relative;
+  left: 65%;
+  top: 81px;
+  border-radius: 6px;
+  background: #fc4444;
+  padding: 2px 8px;
+}
+
+.info {
+  position: relative;
+  top: 40%;
+  color: black;
+  padding: 0px 24px;
+}
+.info div {
+  display: flex;
+}
+
+.info h3 {
+  margin-bottom: 4px;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 23px;
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.address img {
+  width: 12px;
+  height: 12px;
+  position: unset;
+}
+
+@media screen and (max-width: 1595px) {
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+}

@@ -11,6 +11,7 @@ import { Mobile } from "../components/Mobile";
 import { Head } from "../components/SEO";
 import "../styles/global.module.css";
 import { Content } from "../components/Content";
+import { ChampionshipData } from "../components/Championship";
 
 const IndexPage: React.FC<PageProps> = () => {
   return (
@@ -19,6 +20,7 @@ const IndexPage: React.FC<PageProps> = () => {
       <Content />
       <Feature />
       <Banner />
+      <ChampionshipData />
       <Benefits />
       <Mobile />
       <Contact />
