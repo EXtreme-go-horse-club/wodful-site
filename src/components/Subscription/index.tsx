@@ -15,10 +15,17 @@ import * as styles from "./styles.module.css";
 import Modal from "react-modal";
 
 import ArrowRight from "../../images/arrow-right.svg";
+import { ParticipantsService } from "../../services/participants";
 import { Feedback } from "../Feedback";
-interface ISubscriptionData {
+type ISubscriptionData = {
   accessCode: string;
-}
+};
+
+type IGetParticipantsRequest = {
+  type: "nickname" | "code";
+  search: string;
+  index?: number;
+} & ISubscriptionData;
 
 interface ModalType {
   isOpen: boolean;
@@ -42,6 +49,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     register,
     setValue,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<IParticipantForm>({
     mode: "all",
@@ -74,7 +82,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
         !errors.responsibleName ||
         !errors.responsibleEmail ||
         !errors.responsiblePhone),
-    [recaptcha, isVerified]
+    [recaptcha, isVerified, recaptchaCodeRef]
   );
 
   const getEvent = React.useCallback(
@@ -82,6 +90,10 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
       await new EventService()
         .getEvent(access)
         .then((eventResponse: EventResponse) => {
+          if (eventResponse.isFinished) {
+            navigate(`/event/${eventResponse.accessCode}`);
+            return;
+          }
           setIndexes([]);
           let singleTicket = eventResponse.tickets.find(
             (ticket: Ticket) => ticket.id === ticketId
@@ -96,21 +108,36 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     []
   );
 
+  const getParticipant = React.useCallback(
+    async ({ accessCode, search, type, index }: IGetParticipantsRequest) => {
+      if (type === "code") {
+        await new ParticipantsService()
+          .getParticipantByCode({ accessCode, search })
+          .catch(() =>
+            setError(`participants.${index!}.identificationCode`, {
+              message: "Documento já cadastrado",
+            })
+          );
+      }
+
+      if (type === "nickname") {
+        await new ParticipantsService()
+          .getParticipantByNickname({ accessCode, search })
+          .catch(() =>
+            setError("nickname", { message: "Nome ou apelido já cadastrado" })
+          );
+      }
+    },
+    []
+  );
+
   const PostSubscription = React.useCallback(
     async (subscription: IParticipantForm) => {
       await new SubscriptionService()
         .postSubscription(subscription)
-        .then((response: any) =>
-          setModalState({ isOpen: true, type: "success" })
-        )
+        .then(() => setModalState({ isOpen: true, type: "success" }))
         .catch(() => {
           setModalState({ isOpen: true, type: "error" });
-          window.gtag("event", "click", {
-            event_label: "request_error",
-            content_type: "error_in_subscription",
-            value: `error_in_subscription`,
-            description: `error_in_subscription`,
-          });
         });
     },
     []
@@ -128,8 +155,16 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
       return;
     }
 
-    subscription.ticketId = ticket!.id;
-    PostSubscription(subscription);
+    const subs = {
+      ...subscription,
+      participants: subscription.participants.map((participant) => ({
+        ...participant,
+        identificationCode: regexOnlyNumber(participant.identificationCode),
+      })),
+    };
+
+    subs.ticketId = ticket!.id;
+    PostSubscription(subs);
   };
 
   const formatPhone = (phoneNumber: string) => {
@@ -234,6 +269,12 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                     }
                     type="text"
                     {...register("nickname", {
+                      onBlur: (ev) =>
+                        getParticipant({
+                          accessCode: event?.accessCode!,
+                          search: ev.target.value,
+                          type: "nickname",
+                        }),
                       required: Validation.invalidEmpty,
                       minLength: {
                         value: 3,
@@ -397,6 +438,13 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                               `participants.${index}.identificationCode`,
                               {
                                 required: Validation.invalidEmpty,
+                                onBlur: (ev) =>
+                                  getParticipant({
+                                    accessCode: event?.accessCode!,
+                                    search: ev.target.value,
+                                    type: "code",
+                                    index,
+                                  }),
                                 minLength: {
                                   value: 9,
                                   message: Validation.invalidSM,

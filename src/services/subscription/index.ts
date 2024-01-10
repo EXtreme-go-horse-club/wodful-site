@@ -7,7 +7,7 @@ export class SubscriptionService {
   async postSubscription(participants: IParticipantForm): Promise<any> {
     const event: any = await wodfulApi.post(this.path, participants, {
       headers: {
-        ["x-api-key"]: `${process.env.GATSBY_apiKey}`,
+        ["x-api-key"]: `${process.env.GATSBY_WODFUL_API_KEY}`,
       },
     });
 
