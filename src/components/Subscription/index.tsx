@@ -103,7 +103,8 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
           for (let index = 0; index < singleTicket!.category.members; index++) {
             setIndexes((indexes) => [...indexes, index]);
           }
-        });
+        })
+        .catch(() => navigate("/404"));
     },
     []
   );
