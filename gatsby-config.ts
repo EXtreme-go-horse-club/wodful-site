@@ -13,7 +13,7 @@ const config: GatsbyConfig = {
       resolve: "gatsby-plugin-manifest",
       options: {
         icon: "./src/images/fav.svg",
-        name: `Wodful - Site`,
+        name: `Wodful - Gestão de eventos de crossfit`,
         short_name: `Wodful`,
         start_url: `/`,
       },

@@ -110,7 +110,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
 
   const getParticipant = React.useCallback(
     async ({ accessCode, search, type, index }: IGetParticipantsRequest) => {
-      if (type === "code") {
+      if (search && type === "code") {
         await new ParticipantsService()
           .getParticipantByCode({ accessCode, search })
           .catch(() =>
@@ -120,7 +120,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
           );
       }
 
-      if (type === "nickname") {
+      if (search && type === "nickname") {
         await new ParticipantsService()
           .getParticipantByNickname({ accessCode, search })
           .catch(() =>

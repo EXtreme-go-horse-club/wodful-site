@@ -27,6 +27,11 @@
   justify-content: space-between;
 }
 
+.tickets:hover {
+  background: #e2e8f073;
+}
+
+
 .tickets:last-child {
   border-bottom: 0px;
 }
@@ -70,7 +75,7 @@
 @media screen and (max-width: 1224px) {
   .right {
 
-    width: 72%;
+    width: 80%;
     position: inherit;
     margin-top: 24px;
   }
