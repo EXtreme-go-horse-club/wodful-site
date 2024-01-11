@@ -123,13 +123,13 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
 
       if (search && type === "nickname") {
         await new ParticipantsService()
-          .getParticipantByNickname({ accessCode, search })
+          .getParticipantByNickname({ accessCode, search, ticket: ticket?.id })
           .catch(() =>
             setError("nickname", { message: "Nome ou apelido já cadastrado" })
           );
       }
     },
-    []
+    [ticket]
   );
 
   const PostSubscription = React.useCallback(
@@ -175,7 +175,6 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
 
   useEffect(() => {
     const ticketStorage = localStorage.getItem("@Wodful:ticket");
-
     if (!ticketStorage) navigate(`/event/${accessCode}/`);
     getEvent(accessCode, ticketStorage!.replaceAll('"', ""));
   }, [getEvent]);
