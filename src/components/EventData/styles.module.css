@@ -2,7 +2,9 @@
   background-color: #fff;
   color: #000;
   position: relative;
-  height: 86vh;
+  min-height: 100vh;
+  height: auto;
+  padding-bottom: 40px;
 }
 
 .banner {
@@ -141,6 +143,10 @@ p {
   .event_data {
     width: 100%;
     padding-top: 0px;
+  }
+
+  .left {
+    width: 100%;
   }
 
 }

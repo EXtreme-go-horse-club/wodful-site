@@ -1,49 +1,56 @@
-import * as React from "react"
-import { Link, HeadFC, PageProps } from "gatsby"
+import { Player } from "@lottiefiles/react-lottie-player";
+import { HeadFC, Link, PageProps } from "gatsby";
+import * as React from "react";
 
-const pageStyles = {
-  color: "#232129",
-  padding: "96px",
-  fontFamily: "-apple-system, Roboto, sans-serif, serif",
-}
 const headingStyles = {
   marginTop: 0,
-  marginBottom: 64,
+  marginBottom: 36,
   maxWidth: 320,
-}
+};
 
 const paragraphStyles = {
-  marginBottom: 48,
-}
-const codeStyles = {
-  color: "#8A6534",
-  padding: 4,
-  backgroundColor: "#FFF4DB",
-  fontSize: "1.25rem",
-  borderRadius: 4,
-}
+  marginBottom: 36,
+};
 
 const NotFoundPage: React.FC<PageProps> = () => {
   return (
-    <main style={pageStyles}>
-      <h1 style={headingStyles}>Page not found</h1>
+    <main
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        width: "100vw",
+        flexDirection: "column",
+        textAlign: "center",
+      }}
+    >
+      <Player
+        autoplay
+        keepLastFrame
+        src={`https://lottie.host/5b8bebb0-b23f-4bf1-ad27-bb98ffe85923/G2P5SOhuTB.json`}
+        style={{ height: "360px", width: "360px" }}
+        loop
+      />
+      <h1 style={headingStyles}>Página não encontrada</h1>
       <p style={paragraphStyles}>
-        Sorry 😔, we couldn’t find what you were looking for.
-        <br />
-        {process.env.NODE_ENV === "development" ? (
-          <>
-            <br />
-            Try creating a page in <code style={codeStyles}>src/pages/</code>.
-            <br />
-          </>
-        ) : null}
-        <br />
-        <Link to="/">Go home</Link>.
+        Oops! Parece que a página que você está procurando desapareceu. Mas não
+        se preocupe, você pode voltar para a nossa página inicial.
       </p>
+      <Link to="/">
+        <button
+          style={{
+            padding: "16px 24px",
+          }}
+          type="button"
+        >
+          Página inicial
+        </button>
+      </Link>
     </main>
-  )
-}
+  );
+};
 
-export default NotFoundPage
+export default NotFoundPage;
 
-export const Head: HeadFC = () => <title>Not found</title>
+export const Head: HeadFC = () => <title>Not found</title>;

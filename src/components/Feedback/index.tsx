@@ -20,12 +20,12 @@ export const Feedback = ({ type = "success", closeModal }: FeedbackTypes) => (
       }`}
       style={{ height: "240px", width: "240px" }}
     ></Player>
-    <h3 className={styles.h3}>
+    <h3>
       {type === "success"
         ? "Inscrição realizada!"
         : "Erro ao realizar a inscrição!"}
     </h3>
-    <p className={styles.p}>
+    <p>
       {type === "success"
         ? "Acompanhe as nossas redes sociais para novidades e dicas sobre o evento."
         : "Não foi possível realizar a sua inscrição, tente novamente mais tarde."}
