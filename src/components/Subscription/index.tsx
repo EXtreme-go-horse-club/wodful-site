@@ -173,6 +173,11 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     setValue("responsiblePhone", phoneNumber);
   };
 
+  const formatDocument = (document: string, index: number) => {
+    document = regexOnlyNumber(document);
+    setValue(`participants.${index}.identificationCode`, document);
+  };
+
   useEffect(() => {
     const ticketStorage = localStorage.getItem("@Wodful:ticket");
     if (!ticketStorage) navigate(`/event/${accessCode}/`);
@@ -453,6 +458,10 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                                   value: 20,
                                   message: Validation.invalidLG,
                                 },
+                                onChange(event) {
+                                  formatDocument(event.target.value, index);
+                                },
+
                                 validate: (value) =>
                                   isValidDocument(value) || Validation.invalid,
                               }
