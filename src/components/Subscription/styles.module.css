@@ -192,7 +192,7 @@ input {
   form {
     position: relative;
     width: 80%;
-    padding-bottom: 50%;
+    padding-bottom: 35%;
     margin-bottom: 15%;
   }
 
@@ -234,4 +234,13 @@ input {
       font-size: 28px;
     }
   }
+}
+
+@media screen and (max-width: 420px) {
+  .main {
+    margin-bottom: 45%;
+  }
+
+
+
 }
