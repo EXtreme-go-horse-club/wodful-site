@@ -3,6 +3,7 @@
   margin-top: 64px;
   border-radius: 8px;
   background: var(--base-white, #fff);
+  height: fit-content;
 
   /* Shadow/lg */
   box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.05),
