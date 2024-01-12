@@ -236,7 +236,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
 
             <section className={styles.right}>
               <div className={styles.rightTitle}>Inscrições</div>
-              <section>
+              <section style={{ padding: "16px" }}>
                 <article className={styles.tickets}>
                   <div>
                     <p>
