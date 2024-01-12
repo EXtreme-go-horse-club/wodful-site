@@ -34,9 +34,15 @@
 
 .main {
   display: flex;
-  flex-direction: column;
   width: 880px;
+  justify-content: space-between;
   margin: auto;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  width: 60%
 }
 
 p {
@@ -46,9 +52,6 @@ p {
 }
 
 
-.left {
-  width: 72%;
-}
 
 .event_data {
   padding-top: 36px;
@@ -56,7 +59,6 @@ p {
   flex-direction: column;
   gap: 16px;
 
-  width: 72%;
 }
 
 .event_info {
@@ -107,8 +109,13 @@ p {
 
   .main {
     width: 660px;
-    right: 10%;
-    left: 10%;
+    flex-direction: column;
+
+  }
+
+  .info {
+
+    width: 80%
   }
 
 }
@@ -132,9 +139,8 @@ p {
 
   .main {
     width: 80%;
+    flex-direction: column;
 
-    right: 10%;
-    left: 10%;
     height: auto;
     padding: 32px 0px;
   }
@@ -145,8 +151,8 @@ p {
     padding-top: 0px;
   }
 
-  .left {
-    width: 100%;
+  .info {
+    width: 80%
   }
 
 }
