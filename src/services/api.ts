@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const wodfulApi = axios.create({
-  baseURL: "http://localhost:3333/api",
+  baseURL: `${process.env.GATSBY_BASE_SERVER_URL}/api`,
 });
 
 export default wodfulApi;
