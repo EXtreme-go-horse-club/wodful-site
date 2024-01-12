@@ -9,6 +9,7 @@ const config: GatsbyConfig = {
     DEV_SSR: false,
   },
   plugins: [
+    "gatsby-plugin-netlify",
     {
       resolve: "gatsby-plugin-manifest",
       options: {
