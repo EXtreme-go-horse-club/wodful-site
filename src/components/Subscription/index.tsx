@@ -37,8 +37,8 @@ interface ModalType {
 const Validation = {
   invalidEmpty: "Campo obrigatório",
   invalid: "Valor inválido",
-  invalidSM: "Muito curto",
-  invalidLG: "Muito longo",
+  invalidSM: "Mínimo 1 caracteres",
+  invalidLG: "Máximo 20 caracteres",
 };
 
 export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
@@ -498,7 +498,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                               </label>
                               <input
                                 id={`${participants}.tShirtSize`}
-                                placeholder="GG"
+                                placeholder="GG - Marcus"
                                 className={
                                   !!errors.participants &&
                                   !!errors.participants![index]?.tShirtSize
@@ -515,7 +515,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                                       message: Validation.invalidSM,
                                     },
                                     maxLength: {
-                                      value: 4,
+                                      value: 20,
                                       message: Validation.invalidLG,
                                     },
                                   }
@@ -542,7 +542,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                                     ? styles.invalid
                                     : ""
                                 }
-                                placeholder="Rua barbacena, Paraná"
+                                placeholder="Rua do wodful, paraná"
                                 type="text"
                                 {...register(`participants.${index}.city`, {
                                   required: Validation.invalidEmpty,
