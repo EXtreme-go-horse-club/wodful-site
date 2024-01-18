@@ -28,6 +28,17 @@ export const EventData = ({ accessCode }: IEventData) => {
       .finally(() => setIsLoading(false));
   }, []);
 
+  function getBannerUrl(path: string) {
+    const storageType = process.env.GATSBY_STORAGE_TYPE;
+    const baseUrl = process.env.GATSBY_BASE_SERVER_URL;
+    const awsBucketUrl = process.env.GATSBY_AWS_PUBLIC_BUCKET;
+    const bannerPath = path;
+
+    return storageType === "local"
+      ? `${baseUrl}/${bannerPath}`
+      : `${awsBucketUrl}/${bannerPath}`;
+  }
+
   useEffect(() => {
     getEvent(accessCode);
   }, [getEvent]);
@@ -39,7 +50,7 @@ export const EventData = ({ accessCode }: IEventData) => {
           <div className={styles.banner} />
           {event?.banner && (
             <img
-              src={`${process.env.GATSBY_BASE_SERVER_URL}/banner/${event.banner}`}
+              src={getBannerUrl(event.banner)}
               className={styles.background}
             />
           )}
