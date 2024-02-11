@@ -38,7 +38,7 @@ const Validation = {
   invalidEmpty: "Campo obrigatório",
   invalid: "Valor inválido",
   invalidSM: "Mínimo 1 caracteres",
-  invalidLG: "Máximo 20 caracteres",
+  invalidLG: "Máximo 50 caracteres",
 };
 
 export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
@@ -47,6 +47,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
   const [ticket, setTicket] = useState<Ticket>();
   const [indexes, setIndexes] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const {
     register,
     setValue,
@@ -477,7 +478,6 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                                     onChange(event) {
                                       formatDocument(event.target.value, index);
                                     },
-
                                     validate: (value) =>
                                       isValidDocument(value) ||
                                       Validation.invalid,
@@ -515,7 +515,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                                       message: Validation.invalidSM,
                                     },
                                     maxLength: {
-                                      value: 20,
+                                      value: 50,
                                       message: Validation.invalidLG,
                                     },
                                   }
