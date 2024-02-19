@@ -166,9 +166,9 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
       participants: subscription.participants.map((participant) => ({
         ...participant,
         identificationCode: regexOnlyNumber(participant.identificationCode),
+        tShirtSize: "Sem camiseta", // TODO - Remover quando implementar melhoria de camiseta.
       })),
     };
-
     subs.ticketId = ticket!.id;
     PostSubscription(subs);
   };
@@ -505,11 +505,13 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                                     ? styles.invalid
                                     : ""
                                 }
+                                defaultValue={"Sem camiseta"}
                                 type="text"
                                 {...register(
                                   `participants.${index}.tShirtSize`,
                                   {
                                     required: Validation.invalidEmpty,
+                                    disabled: true,
                                     minLength: {
                                       value: 1,
                                       message: Validation.invalidSM,
