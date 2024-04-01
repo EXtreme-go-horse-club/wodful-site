@@ -5,7 +5,11 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import Calendar from "../../images/calendar-black.svg";
 import MapPin from "../../images/map-pin.svg";
-import { EventResponse, Ticket } from "../../models/EventResponse";
+import {
+  EventResponse,
+  Ticket,
+  TshirtSizeResponse,
+} from "../../models/EventResponse";
 import { IParticipantForm } from "../../models/ParticipantDTO";
 import { EventService } from "../../services/events";
 import { SubscriptionService } from "../../services/subscription";
@@ -47,6 +51,9 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
   const [ticket, setTicket] = useState<Ticket>();
   const [indexes, setIndexes] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [tshirtConfigs, setTshirtConfigs] = useState<TshirtSizeResponse>(
+    {} as TshirtSizeResponse
+  );
 
   const {
     register,
@@ -114,6 +121,16 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     []
   );
 
+  const getEventTshirt = React.useCallback(async (access: string) => {
+    setIsLoading(true);
+    await new EventService()
+      .getEventTshirts(access)
+      .then((tshirtconfig: TshirtSizeResponse) =>
+        setTshirtConfigs(tshirtconfig)
+      )
+      .finally(() => setIsLoading(false));
+  }, []);
+
   const getParticipant = React.useCallback(
     async ({ accessCode, search, type, index }: IGetParticipantsRequest) => {
       if (search && type === "code") {
@@ -166,9 +183,13 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
       participants: subscription.participants.map((participant) => ({
         ...participant,
         identificationCode: regexOnlyNumber(participant.identificationCode),
-        tShirtSize: "Sem camiseta", // TODO - Remover quando implementar melhoria de camiseta.
+        tShirtSize:
+          tshirtConfigs.hasTshirt === "true"
+            ? participant.tShirtSize
+            : "Sem camiseta",
       })),
     };
+
     subs.ticketId = ticket!.id;
     PostSubscription(subs);
   };
@@ -187,6 +208,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     const ticketStorage = localStorage.getItem("@Wodful:ticket");
     if (!ticketStorage) navigate(`/event/${accessCode}/`);
     getEvent(accessCode, ticketStorage!.replaceAll('"', ""));
+    getEventTshirt(accessCode);
   }, [getEvent]);
 
   return (
@@ -492,37 +514,40 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                                     ?.identificationCode?.message}
                               </span>
                             </div>
+
                             <div className={styles.single}>
                               <label htmlFor={`${participants}.tShirtSize`}>
                                 Camiseta
                               </label>
-                              <input
+                              <select
                                 id={`${participants}.tShirtSize`}
-                                placeholder="GG - Marcus"
+                                disabled={tshirtConfigs.hasTshirt === "false"}
                                 className={
                                   !!errors.participants &&
                                   !!errors.participants![index]?.tShirtSize
                                     ? styles.invalid
                                     : ""
                                 }
-                                defaultValue={"Sem camiseta"}
-                                type="text"
                                 {...register(
                                   `participants.${index}.tShirtSize`,
                                   {
                                     required: Validation.invalidEmpty,
-                                    disabled: true,
-                                    minLength: {
-                                      value: 1,
-                                      message: Validation.invalidSM,
-                                    },
-                                    maxLength: {
-                                      value: 50,
-                                      message: Validation.invalidLG,
-                                    },
+                                    disabled:
+                                      tshirtConfigs.hasTshirt === "false",
                                   }
                                 )}
-                              />
+                              >
+                                <option value="">
+                                  {tshirtConfigs.hasTshirt === "true"
+                                    ? "Selecione um tamanho"
+                                    : "Sem camiseta"}
+                                </option>
+                                {tshirtConfigs.tShirtSizes.map((size) => (
+                                  <option key={size} value={size}>
+                                    {size}
+                                  </option>
+                                ))}
+                              </select>
                               <span className={styles.error}>
                                 {errors.participants &&
                                   errors.participants![index]?.tShirtSize &&
