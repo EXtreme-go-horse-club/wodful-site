@@ -118,6 +118,10 @@ p {
     width: 80%
   }
 
+  p {
+    max-width: 100%;
+  }
+
 }
 
 @media screen and (max-width: 767px) {
@@ -153,6 +157,10 @@ p {
 
   .info {
     width: 100%
+  }
+
+  p {
+    max-width: 100%;
   }
 
 }
