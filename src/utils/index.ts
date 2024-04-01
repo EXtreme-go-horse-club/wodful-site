@@ -1,10 +1,10 @@
 export const isValidDocument = (value: string) => {
-  if (typeof value !== 'string') {
+  if (typeof value !== "string") {
     return false;
   }
 
-  value = value.replace(/[^\d]+/g, '');
-  if (value.length == 9 && !value.match(/(\d)\1{10}/)) {
+  value = value.replace(/[^\d]+/g, "");
+  if ((value.length == 8 || value.length == 9) && !value.match(/(\d)\1{10}/)) {
     return true;
   }
 
@@ -12,9 +12,11 @@ export const isValidDocument = (value: string) => {
     return false;
   }
 
-  const values = value.split('').map((el) => +el);
+  const values = value.split("").map((el) => +el);
   const rest = (count: any) =>
-    ((values.slice(0, count - 12).reduce((soma, el, index) => soma + el * (count - index), 0) *
+    ((values
+      .slice(0, count - 12)
+      .reduce((soma, el, index) => soma + el * (count - index), 0) *
       10) %
       11) %
     10;
@@ -23,5 +25,5 @@ export const isValidDocument = (value: string) => {
 };
 
 export const regexOnlyNumber = (value: string) => {
-  return value.replace(/[^0-9]/g, '').trim();
+  return value.replace(/[^0-9]/g, "").trim();
 };

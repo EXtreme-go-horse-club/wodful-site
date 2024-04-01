@@ -476,7 +476,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                                     ? styles.invalid
                                     : ""
                                 }
-                                placeholder="RG ou CPF"
+                                placeholder="CPF"
                                 type="tel"
                                 {...register(
                                   `participants.${index}.identificationCode`,
@@ -490,13 +490,10 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                                         index,
                                       }),
                                     minLength: {
-                                      value: 9,
-                                      message: Validation.invalidSM,
+                                      value: 11,
+                                      message: "Mínimo 11 caracteres",
                                     },
-                                    maxLength: {
-                                      value: 20,
-                                      message: Validation.invalidLG,
-                                    },
+
                                     onChange(event) {
                                       formatDocument(event.target.value, index);
                                     },
