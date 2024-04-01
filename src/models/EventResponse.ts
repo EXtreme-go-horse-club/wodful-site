@@ -22,3 +22,9 @@ interface Category {
   isTeam: string;
   members: number;
 }
+
+export interface TshirtSizeResponse {
+  hasNameInTshirt: string;
+  hasTshirt: string;
+  tShirtSizes: string[];
+}
