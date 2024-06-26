@@ -518,7 +518,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                               </label>
                               <select
                                 id={`${participants}.tShirtSize`}
-                                disabled={tshirtConfigs.hasTshirt === "false"}
+                                disabled={tshirtConfigs?.hasTshirt === "false"}
                                 className={
                                   !!errors.participants &&
                                   !!errors.participants![index]?.tShirtSize
@@ -530,16 +530,16 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                                   {
                                     required: Validation.invalidEmpty,
                                     disabled:
-                                      tshirtConfigs.hasTshirt === "false",
+                                      tshirtConfigs?.hasTshirt === "false",
                                   }
                                 )}
                               >
                                 <option value="">
-                                  {tshirtConfigs.hasTshirt === "true"
+                                  {tshirtConfigs?.hasTshirt === "true"
                                     ? "Selecione um tamanho"
                                     : "Sem camiseta"}
                                 </option>
-                                {tshirtConfigs.tShirtSizes.map((size) => (
+                                {tshirtConfigs?.tShirtSizes.map((size) => (
                                   <option key={size} value={size}>
                                     {size}
                                   </option>
