@@ -539,7 +539,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                                     ? "Selecione um tamanho"
                                     : "Sem camiseta"}
                                 </option>
-                                {tshirtConfigs?.tShirtSizes.map((size) => (
+                                {tshirtConfigs?.tShirtSizes?.map((size) => (
                                   <option key={size} value={size}>
                                     {size}
                                   </option>
