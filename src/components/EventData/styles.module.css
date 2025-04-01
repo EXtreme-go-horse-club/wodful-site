@@ -132,12 +132,18 @@ p {
     height: auto;
   }
 
+  .banner {
+    height: auto;
+  }
+
   .background {
     width: 100%;
     right: 0%;
     left: 0%;
     top: 0px;
     border-radius: 0;
+    height: auto;
+    position: sticky;
   }
 
   .main {
