@@ -8,7 +8,7 @@ export const Contact = () => {
   const [isDisabled, setIsDisabled] = React.useState<boolean>(false);
 
   const onSubmit = async () => {
-    const link = `https://wa.me/554598003610?text=${message}`;
+    const link = `https://wa.me/554598070615?text=${message}`;
     window.open(link, "_blank");
     setIsDisabled(true);
 
