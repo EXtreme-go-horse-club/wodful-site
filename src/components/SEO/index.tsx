@@ -14,6 +14,7 @@ const SEO = ({ children }: SEOProps) => (
     <meta name="description" content="Gestão de eventos de Crossfit" />
     <meta name="keywords" content="Crossfit, Fitness, Competição" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-adsense-account" content="ca-pub-6685231272236714" />
     {children}
   </>
 );
