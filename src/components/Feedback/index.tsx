@@ -27,7 +27,7 @@ export const Feedback = ({ type = "success", closeModal }: FeedbackTypes) => (
     </h3>
     <p>
       {type === "success"
-        ? "Acompanhe as nossas redes sociais para novidades e dicas sobre o evento."
+        ? "Sua inscição foi realizada com sucesso! Em breve nossa equipe entrará em contato para finalizar o pagamento com segurança!"
         : "Não foi possível realizar a sua inscrição, tente novamente mais tarde."}
     </p>
 
