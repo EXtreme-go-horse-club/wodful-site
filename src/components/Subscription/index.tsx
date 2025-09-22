@@ -653,6 +653,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
           >
             <Feedback
               type={modalState.type}
+              link={ticket?.paymentLink!}
               closeModal={() => setModalState({ isOpen: false })}
             />
           </Modal>

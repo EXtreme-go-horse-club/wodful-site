@@ -6,9 +6,14 @@ import * as styles from "./styles.module.css";
 interface FeedbackTypes {
   type?: "success" | "error";
   closeModal: () => void;
+  link: string | null;
 }
 
-export const Feedback = ({ type = "success", closeModal }: FeedbackTypes) => (
+export const Feedback = ({
+  type = "success",
+  closeModal,
+  link,
+}: FeedbackTypes) => (
   <section className={styles.container}>
     <Player
       autoplay
@@ -27,19 +32,39 @@ export const Feedback = ({ type = "success", closeModal }: FeedbackTypes) => (
     </h3>
     <p>
       {type === "success"
-        ? "Sua inscição foi realizada com sucesso! Em breve nossa equipe entrará em contato para finalizar o pagamento com segurança!"
+        ? "Acompanhe as nossas redes sociais para novidades e dicas sobre o evento."
         : "Não foi possível realizar a sua inscrição, tente novamente mais tarde."}
     </p>
 
-    <button
-      style={{
-        padding: "16px",
-        marginTop: "40px",
-      }}
-      type="button"
-      onClick={type === "success" ? () => navigate("/") : () => closeModal()}
-    >
-      {type === "success" ? "Voltar para o site" : "Fechar"}
-    </button>
+    {link ? (
+      <button
+        style={{
+          padding: "16px",
+          marginTop: "40px",
+        }}
+        type="button"
+        onClick={
+          type === "success"
+            ? () =>
+                navigate(link, {
+                  replace: true,
+                })
+            : () => closeModal()
+        }
+      >
+        {type === "success" ? "Seguir com pagamento" : "Fechar"}
+      </button>
+    ) : (
+      <button
+        style={{
+          padding: "16px",
+          marginTop: "40px",
+        }}
+        type="button"
+        onClick={type === "success" ? () => navigate("/") : () => closeModal()}
+      >
+        {type === "success" ? "Voltar" : "Fechar"}
+      </button>
+    )}
   </section>
 );
