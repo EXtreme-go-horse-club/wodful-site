@@ -223,8 +223,8 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
               onChange={(e) => setFakeField(e.target.value)}
             />
             <main className={styles.main}>
-              <div className={styles.heading}>
-                <section className={styles.title}>
+              <section className={styles.content}>
+                <header className={styles.heading}>
                   <div
                     style={{
                       display: "flex",
@@ -261,314 +261,170 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                       <p className={styles.paragraph}>{event?.address}</p>
                     </div>
                   </article>
-                </section>
+                </header>
 
-                <section className={styles.right}>
-                  <div className={styles.rightTitle}>Inscrições</div>
-                  <section style={{ padding: "16px" }}>
-                    <article className={styles.tickets}>
-                      <div>
-                        <p>
-                          <b>{ticket?.name}</b>
-                        </p>
-                        <p>{ticket?.description}</p>
-                      </div>
-                    </article>
-
-                    <button disabled={!canSubmit} type="submit">
-                      Enviar
-                    </button>
-                  </section>
-                </section>
-              </div>
-
-              <>
-                {ticket && (
-                  <div className={styles.form}>
-                    <p className={styles.responsible}>Dados do responsável</p>
-                    <div className={styles.single}>
-                      <label htmlFor="nickname">
-                        {ticket!.category.members > 1
-                          ? "Nome do time"
-                          : "Nome ou Apelido"}
-                      </label>
-                      <input
-                        className={!!errors.nickname ? styles.invalid : ""}
-                        autoFocus
-                        id="nickname"
-                        placeholder={
-                          ticket!.category.members > 1
-                            ? "Wodful team"
-                            : "João da silva"
-                        }
-                        type="text"
-                        {...register("nickname", {
-                          onBlur: (ev) =>
-                            getParticipant({
-                              accessCode: event?.accessCode!,
-                              search: ev.target.value,
-                              type: "nickname",
-                            }),
-                          required: Validation.invalidEmpty,
-                          minLength: {
-                            value: 3,
-                            message: Validation.invalidSM,
-                          },
-                          maxLength: {
-                            value: 50,
-                            message: Validation.invalidLG,
-                          },
-                        })}
-                      />
-                      <span className={styles.error}>
-                        {errors.nickname && errors.nickname.message}
-                      </span>
-                    </div>
-                    <div className={styles.single}>
-                      <label htmlFor="responsibleName">
-                        Nome do responsável
-                      </label>
-                      <input
-                        className={
-                          !!errors.responsibleName ? styles.invalid : ""
-                        }
-                        id="responsibleName"
-                        placeholder="João da silva"
-                        type="text"
-                        {...register("responsibleName", {
-                          required: Validation.invalidEmpty,
-                          minLength: {
-                            value: 3,
-                            message: Validation.invalidSM,
-                          },
-                          maxLength: {
-                            value: 50,
-                            message: Validation.invalidLG,
-                          },
-                        })}
-                      />
-                      <span className={styles.error}>
-                        {errors.responsibleName &&
-                          errors.responsibleName.message}
-                      </span>
-                    </div>
-                    <section className={styles.double}>
+                <>
+                  {ticket && (
+                    <div className={styles.form}>
+                      <p className={styles.responsible}>Dados do responsável</p>
                       <div className={styles.single}>
-                        <label htmlFor="responsibleEmail">
-                          E-mail do responsável
+                        <label htmlFor="nickname">
+                          {ticket!.category.members > 1
+                            ? "Nome do time"
+                            : "Nome ou Apelido"}
                         </label>
                         <input
-                          className={
-                            !!errors.responsibleEmail ? styles.invalid : ""
+                          className={!!errors.nickname ? styles.invalid : ""}
+                          autoFocus
+                          id="nickname"
+                          placeholder={
+                            ticket!.category.members > 1
+                              ? "Wodful team"
+                              : "João da silva"
                           }
-                          id="responsibleEmail"
-                          placeholder="joao@email.com"
-                          type="email"
-                          {...register("responsibleEmail", {
+                          type="text"
+                          {...register("nickname", {
+                            onBlur: (ev) =>
+                              getParticipant({
+                                accessCode: event?.accessCode!,
+                                search: ev.target.value,
+                                type: "nickname",
+                              }),
                             required: Validation.invalidEmpty,
                             minLength: {
-                              value: 4,
+                              value: 3,
                               message: Validation.invalidSM,
                             },
                             maxLength: {
                               value: 50,
                               message: Validation.invalidLG,
                             },
-                            pattern: {
-                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                              message: Validation.invalid,
-                            },
                           })}
                         />
                         <span className={styles.error}>
-                          {errors.responsibleEmail &&
-                            errors.responsibleEmail.message}
+                          {errors.nickname && errors.nickname.message}
                         </span>
                       </div>
                       <div className={styles.single}>
-                        <label htmlFor="responsiblePhone">
-                          Telefone do responsável
+                        <label htmlFor="responsibleName">
+                          Nome do responsável
                         </label>
                         <input
                           className={
-                            !!errors.responsiblePhone ? styles.invalid : ""
+                            !!errors.responsibleName ? styles.invalid : ""
                           }
-                          id="responsiblePhone"
-                          placeholder="xx x xxxx-xxxx"
-                          type="tel"
-                          {...register("responsiblePhone", {
+                          id="responsibleName"
+                          placeholder="João da silva"
+                          type="text"
+                          {...register("responsibleName", {
                             required: Validation.invalidEmpty,
                             minLength: {
-                              value: 9,
+                              value: 3,
                               message: Validation.invalidSM,
                             },
                             maxLength: {
-                              value: 13,
+                              value: 50,
                               message: Validation.invalidLG,
-                            },
-                            onChange(event) {
-                              formatPhone(event.target.value);
                             },
                           })}
                         />
                         <span className={styles.error}>
-                          {errors.responsiblePhone &&
-                            errors.responsiblePhone.message}
+                          {errors.responsibleName &&
+                            errors.responsibleName.message}
                         </span>
                       </div>
-                    </section>
-                    <p className={styles.participants}>
-                      {ticket.category.members > 1
-                        ? "Dados dos participantes"
-                        : "Dados do participante"}
-                    </p>
-                    {indexes.map((index) => {
-                      const participants = `participants[${index}]`;
-                      return (
-                        <div className={styles.formContainer} key={index}>
-                          <div className={styles.single}>
-                            <label htmlFor={`${participants}.name`}>
-                              {indexes.length > 1
-                                ? `Atleta ${index + 1}`
-                                : "Nome"}
-                            </label>
-                            <input
-                              id={`${participants}.name`}
-                              className={
-                                !!errors.participants &&
-                                !!errors.participants![index]?.name
-                                  ? styles.invalid
-                                  : ""
-                              }
-                              placeholder="João da silva"
-                              type="text"
-                              {...register(`participants.${index}.name`, {
-                                required: Validation.invalidEmpty,
-                                minLength: {
-                                  value: 4,
-                                  message: Validation.invalidSM,
-                                },
-                                maxLength: {
-                                  value: 50,
-                                  message: Validation.invalidLG,
-                                },
-                              })}
-                            />
-                            <span className={styles.error}>
-                              {errors.participants &&
-                                errors.participants![index]?.name &&
-                                errors.participants![index]?.name?.message}
-                            </span>
-                          </div>
-                          <section className={styles.double}>
+                      <section className={styles.double}>
+                        <div className={styles.single}>
+                          <label htmlFor="responsibleEmail">
+                            E-mail do responsável
+                          </label>
+                          <input
+                            className={
+                              !!errors.responsibleEmail ? styles.invalid : ""
+                            }
+                            id="responsibleEmail"
+                            placeholder="joao@email.com"
+                            type="email"
+                            {...register("responsibleEmail", {
+                              required: Validation.invalidEmpty,
+                              minLength: {
+                                value: 4,
+                                message: Validation.invalidSM,
+                              },
+                              maxLength: {
+                                value: 50,
+                                message: Validation.invalidLG,
+                              },
+                              pattern: {
+                                value:
+                                  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: Validation.invalid,
+                              },
+                            })}
+                          />
+                          <span className={styles.error}>
+                            {errors.responsibleEmail &&
+                              errors.responsibleEmail.message}
+                          </span>
+                        </div>
+                        <div className={styles.single}>
+                          <label htmlFor="responsiblePhone">
+                            Telefone do responsável
+                          </label>
+                          <input
+                            className={
+                              !!errors.responsiblePhone ? styles.invalid : ""
+                            }
+                            id="responsiblePhone"
+                            placeholder="xx x xxxx-xxxx"
+                            type="tel"
+                            {...register("responsiblePhone", {
+                              required: Validation.invalidEmpty,
+                              minLength: {
+                                value: 9,
+                                message: Validation.invalidSM,
+                              },
+                              maxLength: {
+                                value: 13,
+                                message: Validation.invalidLG,
+                              },
+                              onChange(event) {
+                                formatPhone(event.target.value);
+                              },
+                            })}
+                          />
+                          <span className={styles.error}>
+                            {errors.responsiblePhone &&
+                              errors.responsiblePhone.message}
+                          </span>
+                        </div>
+                      </section>
+                      <p className={styles.participants}>
+                        {ticket.category.members > 1
+                          ? "Dados dos participantes"
+                          : "Dados do participante"}
+                      </p>
+                      {indexes.map((index) => {
+                        const participants = `participants[${index}]`;
+                        return (
+                          <div className={styles.formContainer} key={index}>
                             <div className={styles.single}>
-                              <label
-                                htmlFor={`${participants}.identificationCode`}
-                              >
-                                Documento
+                              <label htmlFor={`${participants}.name`}>
+                                {indexes.length > 1
+                                  ? `Atleta ${index + 1}`
+                                  : "Nome"}
                               </label>
                               <input
-                                id={`${participants}.identificationCode`}
+                                id={`${participants}.name`}
                                 className={
                                   !!errors.participants &&
-                                  !!errors.participants![index]
-                                    ?.identificationCode
+                                  !!errors.participants![index]?.name
                                     ? styles.invalid
                                     : ""
                                 }
-                                placeholder="CPF"
-                                type="tel"
-                                {...register(
-                                  `participants.${index}.identificationCode`,
-                                  {
-                                    required: Validation.invalidEmpty,
-                                    onBlur: (ev) =>
-                                      getParticipant({
-                                        accessCode: event?.accessCode!,
-                                        search: ev.target.value,
-                                        type: "code",
-                                        index,
-                                      }),
-                                    minLength: {
-                                      value: 11,
-                                      message: "Mínimo 11 caracteres",
-                                    },
-
-                                    onChange(event) {
-                                      formatDocument(event.target.value, index);
-                                    },
-                                    validate: (value) =>
-                                      isValidDocument(value) ||
-                                      Validation.invalid,
-                                  }
-                                )}
-                              />
-                              <span className={styles.error}>
-                                {errors.participants &&
-                                  errors.participants![index]
-                                    ?.identificationCode &&
-                                  errors.participants![index]
-                                    ?.identificationCode?.message}
-                              </span>
-                            </div>
-
-                            <div className={styles.single}>
-                              <label htmlFor={`${participants}.tShirtSize`}>
-                                Camiseta
-                              </label>
-                              <select
-                                id={`${participants}.tShirtSize`}
-                                disabled={tshirtConfigs?.hasTshirt === "false"}
-                                className={
-                                  !!errors.participants &&
-                                  !!errors.participants![index]?.tShirtSize
-                                    ? styles.invalid
-                                    : ""
-                                }
-                                {...register(
-                                  `participants.${index}.tShirtSize`,
-                                  {
-                                    required: Validation.invalidEmpty,
-                                    disabled:
-                                      tshirtConfigs?.hasTshirt === "false",
-                                  }
-                                )}
-                              >
-                                <option value="">
-                                  {tshirtConfigs?.hasTshirt === "true"
-                                    ? "Selecione um tamanho"
-                                    : "Sem camiseta"}
-                                </option>
-                                {tshirtConfigs?.tShirtSizes?.map((size) => (
-                                  <option key={size} value={size}>
-                                    {size}
-                                  </option>
-                                ))}
-                              </select>
-                              <span className={styles.error}>
-                                {errors.participants &&
-                                  errors.participants![index]?.tShirtSize &&
-                                  errors.participants![index]?.tShirtSize
-                                    ?.message}
-                              </span>
-                            </div>
-                          </section>
-                          <section className={styles.double}>
-                            <div className={styles.single}>
-                              <label htmlFor={`${participants}.city`}>
-                                Cidade
-                              </label>
-                              <input
-                                id={`${participants}.city`}
-                                className={
-                                  !!errors.participants &&
-                                  !!errors.participants![index]?.city
-                                    ? styles.invalid
-                                    : ""
-                                }
-                                placeholder="Rua do wodful, paraná"
+                                placeholder="João da silva"
                                 type="text"
-                                {...register(`participants.${index}.city`, {
+                                {...register(`participants.${index}.name`, {
                                   required: Validation.invalidEmpty,
                                   minLength: {
                                     value: 4,
@@ -582,59 +438,208 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                               />
                               <span className={styles.error}>
                                 {errors.participants &&
-                                  errors.participants![index]?.city &&
-                                  errors.participants![index]?.city?.message}
+                                  errors.participants![index]?.name &&
+                                  errors.participants![index]?.name?.message}
                               </span>
                             </div>
-                            <div className={styles.single}>
-                              <label htmlFor={`${participants}.affiliation`}>
-                                Box do participante
-                              </label>
-                              <input
-                                id={`${participants}.affiliation`}
-                                placeholder="CT Wodful"
-                                type="text"
-                                className={
-                                  !!errors.participants &&
-                                  !!errors.participants![index]?.affiliation
-                                    ? styles.invalid
-                                    : ""
-                                }
-                                {...register(
-                                  `participants.${index}.affiliation`,
-                                  {
+                            <section className={styles.double}>
+                              <div className={styles.single}>
+                                <label
+                                  htmlFor={`${participants}.identificationCode`}
+                                >
+                                  Documento
+                                </label>
+                                <input
+                                  id={`${participants}.identificationCode`}
+                                  className={
+                                    !!errors.participants &&
+                                    !!errors.participants![index]
+                                      ?.identificationCode
+                                      ? styles.invalid
+                                      : ""
+                                  }
+                                  placeholder="CPF"
+                                  type="tel"
+                                  {...register(
+                                    `participants.${index}.identificationCode`,
+                                    {
+                                      required: Validation.invalidEmpty,
+                                      onBlur: (ev) =>
+                                        getParticipant({
+                                          accessCode: event?.accessCode!,
+                                          search: ev.target.value,
+                                          type: "code",
+                                          index,
+                                        }),
+                                      minLength: {
+                                        value: 11,
+                                        message: "Mínimo 11 caracteres",
+                                      },
+
+                                      onChange(event) {
+                                        formatDocument(
+                                          event.target.value,
+                                          index
+                                        );
+                                      },
+                                      validate: (value) =>
+                                        isValidDocument(value) ||
+                                        Validation.invalid,
+                                    }
+                                  )}
+                                />
+                                <span className={styles.error}>
+                                  {errors.participants &&
+                                    errors.participants![index]
+                                      ?.identificationCode &&
+                                    errors.participants![index]
+                                      ?.identificationCode?.message}
+                                </span>
+                              </div>
+
+                              <div className={styles.single}>
+                                <label htmlFor={`${participants}.tShirtSize`}>
+                                  Camiseta
+                                </label>
+                                <select
+                                  id={`${participants}.tShirtSize`}
+                                  disabled={
+                                    tshirtConfigs?.hasTshirt === "false"
+                                  }
+                                  className={
+                                    !!errors.participants &&
+                                    !!errors.participants![index]?.tShirtSize
+                                      ? styles.invalid
+                                      : ""
+                                  }
+                                  {...register(
+                                    `participants.${index}.tShirtSize`,
+                                    {
+                                      required: Validation.invalidEmpty,
+                                      disabled:
+                                        tshirtConfigs?.hasTshirt === "false",
+                                    }
+                                  )}
+                                >
+                                  <option value="">
+                                    {tshirtConfigs?.hasTshirt === "true"
+                                      ? "Selecione um tamanho"
+                                      : "Sem camiseta"}
+                                  </option>
+                                  {tshirtConfigs?.tShirtSizes?.map((size) => (
+                                    <option key={size} value={size}>
+                                      {size}
+                                    </option>
+                                  ))}
+                                </select>
+                                <span className={styles.error}>
+                                  {errors.participants &&
+                                    errors.participants![index]?.tShirtSize &&
+                                    errors.participants![index]?.tShirtSize
+                                      ?.message}
+                                </span>
+                              </div>
+                            </section>
+                            <section className={styles.double}>
+                              <div className={styles.single}>
+                                <label htmlFor={`${participants}.city`}>
+                                  Cidade
+                                </label>
+                                <input
+                                  id={`${participants}.city`}
+                                  className={
+                                    !!errors.participants &&
+                                    !!errors.participants![index]?.city
+                                      ? styles.invalid
+                                      : ""
+                                  }
+                                  placeholder="Rua do wodful, paraná"
+                                  type="text"
+                                  {...register(`participants.${index}.city`, {
                                     required: Validation.invalidEmpty,
                                     minLength: {
-                                      value: 3,
+                                      value: 4,
                                       message: Validation.invalidSM,
                                     },
                                     maxLength: {
                                       value: 50,
                                       message: Validation.invalidLG,
                                     },
+                                  })}
+                                />
+                                <span className={styles.error}>
+                                  {errors.participants &&
+                                    errors.participants![index]?.city &&
+                                    errors.participants![index]?.city?.message}
+                                </span>
+                              </div>
+                              <div className={styles.single}>
+                                <label htmlFor={`${participants}.affiliation`}>
+                                  Box do participante
+                                </label>
+                                <input
+                                  id={`${participants}.affiliation`}
+                                  placeholder="CT Wodful"
+                                  type="text"
+                                  className={
+                                    !!errors.participants &&
+                                    !!errors.participants![index]?.affiliation
+                                      ? styles.invalid
+                                      : ""
                                   }
-                                )}
-                              />
-                              <span className={styles.error}>
-                                {errors.participants &&
-                                  errors.participants![index]?.affiliation &&
-                                  errors.participants![index]?.affiliation
-                                    ?.message}
-                              </span>
-                            </div>
-                          </section>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-                <ReCAPTCHA
-                  sitekey={`${process.env.GATSBY_SIE_KEY}`}
-                  onChange={(token) => onChange(token!)}
-                  size="normal"
-                  onExpired={() => recaptchaCodeRef.current?.reset()}
-                />
-              </>
+                                  {...register(
+                                    `participants.${index}.affiliation`,
+                                    {
+                                      required: Validation.invalidEmpty,
+                                      minLength: {
+                                        value: 3,
+                                        message: Validation.invalidSM,
+                                      },
+                                      maxLength: {
+                                        value: 50,
+                                        message: Validation.invalidLG,
+                                      },
+                                    }
+                                  )}
+                                />
+                                <span className={styles.error}>
+                                  {errors.participants &&
+                                    errors.participants![index]?.affiliation &&
+                                    errors.participants![index]?.affiliation
+                                      ?.message}
+                                </span>
+                              </div>
+                            </section>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                  <ReCAPTCHA
+                    sitekey={`${process.env.GATSBY_SIE_KEY}`}
+                    onChange={(token) => onChange(token!)}
+                    size="normal"
+                    onExpired={() => recaptchaCodeRef.current?.reset()}
+                  />
+                </>
+              </section>
+              <section className={styles.right}>
+                <div className={styles.rightTitle}>Inscrições</div>
+                <section style={{ padding: "16px" }}>
+                  <article className={styles.tickets}>
+                    <div>
+                      <p>
+                        <b>{ticket?.name}</b>
+                      </p>
+                      <p>{ticket?.description}</p>
+                    </div>
+                  </article>
+
+                  <button disabled={!canSubmit} type="submit">
+                    Enviar
+                  </button>
+                </section>
+              </section>
             </main>
           </form>
           <Modal
