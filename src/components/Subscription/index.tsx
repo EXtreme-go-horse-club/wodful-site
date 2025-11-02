@@ -65,8 +65,8 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     mode: "all",
   });
 
-  const [recaptcha, setRecaptcha] = React.useState("");
-  const [isVerified, setIsVerified] = React.useState<boolean>(false);
+  // const [recaptcha, setRecaptcha] = React.useState("");
+  // const [isVerified, setIsVerified] = React.useState<boolean>(false);
   const [fake_field, setFakeField] = React.useState("");
 
   const [modalState, setModalState] = React.useState<ModalType>({
@@ -74,25 +74,25 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     type: "success",
   } as ModalType);
 
-  const onChange = (token: string) => {
-    setRecaptcha(token);
-    if (token) {
-      setIsVerified(true);
-    } else {
-      setIsVerified(false);
-    }
-  };
+  // const onChange = (token: string) => {
+  //   setRecaptcha(token);
+  //   if (token) {
+  //     setIsVerified(true);
+  //   } else {
+  //     setIsVerified(false);
+  //   }
+  // };
 
   const canSubmit = React.useMemo(
     () =>
-      isVerified &&
-      !!recaptcha &&
+      // isVerified &&
+      // !!recaptcha &&
       !fake_field &&
       (!errors.nickname ||
         !errors.responsibleName ||
         !errors.responsibleEmail ||
         !errors.responsiblePhone),
-    [recaptcha, isVerified, recaptchaCodeRef]
+    []
   );
 
   const getEvent = React.useCallback(
@@ -615,12 +615,12 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                       })}
                     </div>
                   )}
-                  <ReCAPTCHA
+                  {/* <ReCAPTCHA
                     sitekey={`${process.env.GATSBY_SIE_KEY}`}
                     onChange={(token) => onChange(token!)}
                     size="normal"
                     onExpired={() => recaptchaCodeRef.current?.reset()}
-                  />
+                  /> */}
                 </>
               </section>
               <section className={styles.right}>
