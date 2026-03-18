@@ -42,13 +42,17 @@ form {
 
 .right {
   width: auto;
-  max-width: 375px;
   border-radius: 8px;
   background: var(--base-white, #fff);
 
   /* Shadow/lg */
   box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.05),
     0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.right section {
+  padding: 16px;
+  gap: 16px;
 }
 
 .invalid {
@@ -77,13 +81,83 @@ input:disabled {
 .right section {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 }
 
 .right button {
   padding: 8px;
   width: 200px;
   margin-bottom: 24px;
+  align-self: center;
+}
+
+.couponRow {
+  display: flex;
+  gap: 8px;
+}
+
+.couponRow input {
+  flex: 1;
+}
+
+.applyButton {
+  height: 40px;
+  padding: 0 16px;
+  margin: 0;
+  width: auto;
+}
+
+.couponMessageSuccess {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #059669;
+}
+
+.couponMessageError {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #dc2626;
+}
+
+.ticketPriceRow {
+  margin-top: 6px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.discountBadge {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(5, 150, 105, 0.12);
+  color: #059669;
+}
+
+.ticketPriceOriginal {
+  color: var(--gray-600, #4a5568);
+  text-decoration: line-through;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ticketPriceFinal {
+  color: #059669;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.ticketPriceSingle {
+  color: var(--gray-700, #2d3748);
+  font-size: 18px;
+  font-weight: 800;
 }
 
 .rightTitle {
@@ -95,14 +169,28 @@ input:disabled {
 
 .tickets {
   cursor: pointer;
-  padding: 24px 16px;
+  padding: 18px 16px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid var(--gray-200, #e2e8f0);
+  border-radius: 12px;
+  background: #fff;
 }
 
 .tickets p {
   color: #000;
   max-width: 100%;
+  line-height: 1.25rem;
+}
+
+.tickets p b {
+  font-size: 16px;
+}
+
+.tickets p:nth-child(2) {
+  color: var(--gray-600, #4a5568);
+  font-size: 14px;
 }
 
 .event_data {

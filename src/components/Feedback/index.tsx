@@ -27,13 +27,13 @@ export const Feedback = ({
     ></Player>
     <h3>
       {type === "success"
-        ? "Inscrição realizada!"
-        : "Erro ao realizar a inscrição!"}
+        ? "Pré-inscrição realizada!"
+        : "Erro ao realizar a pré-inscrição!"}
     </h3>
     <p>
       {type === "success"
-        ? "Acompanhe as nossas redes sociais para novidades e dicas sobre o evento."
-        : "Não foi possível realizar a sua inscrição, tente novamente mais tarde."}
+        ? "Sua pré-inscrição foi realizada com sucesso. Siga para o pagamento para finalizar a inscrição."
+        : "Não foi possível realizar a sua pré-inscrição, tente novamente mais tarde."}
     </p>
 
     {link ? (
@@ -55,16 +55,53 @@ export const Feedback = ({
         {type === "success" ? "Seguir com pagamento" : "Fechar"}
       </button>
     ) : (
-      <button
-        style={{
-          padding: "16px",
-          marginTop: "40px",
-        }}
-        type="button"
-        onClick={type === "success" ? () => navigate("/") : () => closeModal()}
-      >
-        {type === "success" ? "Voltar" : "Fechar"}
-      </button>
+      type === "error" ? (
+        <>
+          <button
+            style={{
+              padding: "16px",
+              marginTop: "24px",
+            }}
+            type="button"
+            onClick={() => {
+              const whatsappNumber = "554598070615";
+              const text = "Tive problemas na inscrição, preciso de ajuda";
+              const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+                text
+              )}`;
+
+              window.open(url, "_blank", "noopener,noreferrer");
+            }}
+          >
+            Entrar em contato
+          </button>
+
+          <button
+            style={{
+              padding: "16px",
+              marginTop: "12px",
+              background: "transparent",
+              boxShadow: "none",
+              color: "#319795",
+            }}
+            type="button"
+            onClick={() => closeModal()}
+          >
+            Fechar
+          </button>
+        </>
+      ) : (
+        <button
+          style={{
+            padding: "16px",
+            marginTop: "40px",
+          }}
+          type="button"
+          onClick={() => navigate("/")}
+        >
+          Voltar
+        </button>
+      )
     )}
   </section>
 );
