@@ -22,6 +22,7 @@ import ArrowRight from "../../images/arrow-right.svg";
 import { ParticipantsService } from "../../services/participants";
 import { Feedback } from "../Feedback";
 import { Loading } from "../Loading";
+import type { ValidateCouponResponse } from "../../services/payments";
 type ISubscriptionData = {
   accessCode: string;
 };
@@ -36,6 +37,7 @@ interface ModalType {
   isOpen: boolean;
   type?: "success" | "error";
   message?: string;
+  link?: string | null;
 }
 
 const Validation = {
@@ -60,8 +62,9 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     setValue,
     handleSubmit,
     setError,
-    formState: { errors },
-  } = useForm<IParticipantForm>({
+    watch,
+    formState: { errors, isValid },
+  } = useForm<IParticipantForm & { couponCode?: string }>({
     mode: "all",
   });
 
@@ -83,17 +86,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
   //   }
   // };
 
-  const canSubmit = React.useMemo(
-    () =>
-      // isVerified &&
-      // !!recaptcha &&
-      !fake_field &&
-      (!errors.nickname ||
-        !errors.responsibleName ||
-        !errors.responsibleEmail ||
-        !errors.responsiblePhone),
-    []
-  );
+  const canSubmit = !fake_field && isValid;
 
   const getEvent = React.useCallback(
     async (access: string, ticketId: string) => {
@@ -154,16 +147,116 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     [ticket]
   );
 
+  const couponCode = watch('couponCode');
+  const [couponValidation, setCouponValidation] = React.useState<{
+    status: "idle" | "loading" | "valid" | "invalid";
+    message?: string;
+    result?: ValidateCouponResponse;
+  }>({ status: "idle" });
+
+  const formatCurrency = React.useCallback((value: number) => {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  }, []);
+
+  const applyCoupon = React.useCallback(async () => {
+    const code = (couponCode || "").trim().toUpperCase();
+    if (!code || !ticket?.id) return;
+
+    try {
+      const { PaymentsService } = await import("../../services/payments");
+      const paymentsService = new PaymentsService();
+
+      setCouponValidation({ status: "loading" });
+      const result = await paymentsService.validateCoupon({
+        ticketId: ticket.id,
+        couponCode: code,
+      });
+
+      if (result.valid) {
+        setValue("couponCode", result.coupon.code);
+        setCouponValidation({
+          status: "valid",
+          result,
+          message: "Cupom aplicado!",
+        });
+      } else {
+        const reason = result.reason;
+        const message =
+          reason === "NOT_FOUND"
+            ? "Cupom não encontrado!"
+            : reason === "INACTIVE"
+              ? "Cupom inativo!"
+              : reason === "OUT_OF_WINDOW"
+                ? "Cupom fora do período de validade!"
+                : reason === "MAX_REDEMPTIONS_REACHED"
+                  ? "Cupom esgotado!"
+                  : "Cupom inválido.";
+
+        setCouponValidation({ status: "invalid", result, message });
+      }
+    } catch {
+      setCouponValidation({
+        status: "invalid",
+        message: "Não foi possível validar o cupom agora. Tente novamente.",
+      });
+    }
+  }, [couponCode, ticket?.id, setValue, formatCurrency]);
+
+  const ticketPriceNumber = React.useMemo(() => {
+    const raw: any = ticket?.price as any;
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : 0;
+  }, [ticket?.price]);
+
+  const discounted = React.useMemo(() => {
+    const r = couponValidation.result;
+    if (couponValidation.status === "valid" && r && (r as any).valid) {
+      const vr = r as Extract<ValidateCouponResponse, { valid: true }>;
+      return {
+        original: vr.amountOriginal,
+        final: vr.amountFinal,
+        discountAmount: vr.discountAmount,
+        type: vr.coupon.type,
+        value: vr.coupon.value,
+      };
+    }
+    return null;
+  }, [couponValidation.result, couponValidation.status]);
+
+  const discountBadgeText = React.useMemo(() => {
+    if (!discounted) return null;
+    if (discounted.type === "PERCENTAGE") return `-${discounted.value}%`;
+    return `-${formatCurrency(discounted.discountAmount)}`;
+  }, [discounted, formatCurrency]);
+
   const PostSubscription = React.useCallback(
     async (subscription: IParticipantForm) => {
-      await new SubscriptionService()
-        .postSubscription(subscription)
-        .then(() => setModalState({ isOpen: true, type: "success" }))
-        .catch(() => {
-          setModalState({ isOpen: true, type: "error" });
-        });
+      try {
+        const response = await new SubscriptionService().postSubscription(subscription);
+        const subscriptionId = response.data?.id;
+
+        let paymentLink: string | null = null;
+
+        if (subscriptionId) {
+          const { PaymentsService } = await import("../../services/payments");
+          const paymentsService = new PaymentsService();
+          const anySub = subscription as any;
+          const paymentResponse = await paymentsService.createPayment({
+            subscriptionId,
+            couponCode: anySub.couponCode,
+          });
+          paymentLink = paymentResponse.paymentUrl;
+        }
+
+        setModalState({ isOpen: true, type: "success", message: undefined, link: paymentLink ?? ticket?.paymentLink ?? null });
+      } catch {
+        setModalState({ isOpen: true, type: "error" });
+      }
     },
-    []
+    [ticket]
   );
 
   const onSubmit = (subscription: IParticipantForm) => {
@@ -178,7 +271,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
       return;
     }
 
-    const subs = {
+    const subs: any = {
       ...subscription,
       participants: subscription.participants.map((participant) => ({
         ...participant,
@@ -210,6 +303,10 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     getEvent(accessCode, ticketStorage!.replaceAll('"', ""));
     getEventTshirt(accessCode);
   }, [getEvent]);
+
+  useEffect(() => {
+    setCouponValidation({ status: "idle" });
+  }, [couponCode, ticket?.id]);
 
   return (
     <>
@@ -399,6 +496,39 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                           </span>
                         </div>
                       </section>
+                      <div className={styles.single}>
+                        <label htmlFor="couponCode">Cupom de desconto (opcional)</label>
+                        <div className={styles.couponRow}>
+                          <input
+                            id="couponCode"
+                            placeholder="INSIRA SEU CUPOM AQUI"
+                            type="text"
+                            {...register("couponCode", {
+                              setValueAs: (v) =>
+                                typeof v === "string" ? v.toUpperCase().trim() : v,
+                            })}
+                          />
+                          <button
+                            type="button"
+                            onClick={applyCoupon}
+                            disabled={!couponCode || couponValidation.status === "loading"}
+                            className={styles.applyButton}
+                          >
+                            {couponValidation.status === "loading" ? "Aplicando..." : "Aplicar"}
+                          </button>
+                        </div>
+                        {couponValidation.status !== "idle" && couponValidation.message && (
+                          <span
+                            className={
+                              couponValidation.status === "valid"
+                                ? styles.couponMessageSuccess
+                                : styles.couponMessageError
+                            }
+                          >
+                            {couponValidation.message}
+                          </span>
+                        )}
+                      </div>
                       <p className={styles.participants}>
                         {ticket.category.members > 1
                           ? "Dados dos participantes"
@@ -625,13 +755,34 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
               </section>
               <section className={styles.right}>
                 <div className={styles.rightTitle}>Inscrições</div>
-                <section style={{ padding: "16px" }}>
+                <section>
                   <article className={styles.tickets}>
                     <div>
                       <p>
                         <b>{ticket?.name}</b>
                       </p>
                       <p>{ticket?.description}</p>
+                      <div className={styles.ticketPriceRow}>
+                        {discounted ? (
+                          <>
+                            <span className={styles.ticketPriceOriginal}>
+                              {formatCurrency(discounted.original)}
+                            </span>
+                            <span className={styles.ticketPriceFinal}>
+                              {formatCurrency(discounted.final)}
+                            </span>
+                            {discountBadgeText && (
+                              <span className={styles.discountBadge}>
+                                {discountBadgeText}
+                              </span>
+                            )}
+                          </>
+                        ) : (
+                          <span className={styles.ticketPriceSingle}>
+                            {formatCurrency(ticketPriceNumber)}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </article>
 
@@ -658,7 +809,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
           >
             <Feedback
               type={modalState.type}
-              link={ticket?.paymentLink!}
+              link={modalState.type === 'success' ? (modalState as any).link ?? ticket?.paymentLink ?? null : null}
               closeModal={() => setModalState({ isOpen: false })}
             />
           </Modal>
