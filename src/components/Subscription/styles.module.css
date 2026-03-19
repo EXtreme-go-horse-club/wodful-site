@@ -94,6 +94,7 @@ input:disabled {
 .couponRow {
   display: flex;
   gap: 8px;
+  flex-direction: column;
 }
 
 .couponRow input {
