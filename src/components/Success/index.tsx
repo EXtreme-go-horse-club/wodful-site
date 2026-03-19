@@ -14,7 +14,7 @@ interface SuccessProps {
 const LOTTIE_SUCCESS =
   "https://lottie.host/41a3108f-baaf-40eb-9c73-9043890130cb/I9hOxhavci.json";
 
-const LOTTIE_PENDING = "https://lottie.host/289ee7d5-cebd-4f67-92ac-73f1a45e4e06/krqrSDzuVO.lottie";
+const LOTTIE_PENDING = "https://lottie.host/d76de692-2677-4679-9245-df44bdf74851/oK0dmlMmMt.json";
 
 const LOTTIE_FAILURE =
   "https://lottie.host/938aaa0c-c767-4467-9d8d-518274fdfb6a/DNDJrpvTkh.json";
@@ -31,7 +31,7 @@ const content: Record<
   pending: {
     title: "Pagamento pendente",
     message:
-      "Seu pagamento está em análise. Assim que for confirmado, sua inscrição será aprovada. Você receberá uma confirmação por e-mail.",
+      "Seu pagamento está em análise. Assim que for confirmado, sua inscrição será aprovada e você receberá uma confirmação por e-mail.",
   },
   failure: {
     title: "Pagamento não aprovado",
