@@ -496,39 +496,6 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                           </span>
                         </div>
                       </section>
-                      <div className={styles.single}>
-                        <label htmlFor="couponCode">Cupom de desconto (opcional)</label>
-                        <div className={styles.couponRow}>
-                          <input
-                            id="couponCode"
-                            placeholder="INSIRA SEU CUPOM AQUI"
-                            type="text"
-                            {...register("couponCode", {
-                              setValueAs: (v) =>
-                                typeof v === "string" ? v.toUpperCase().trim() : v,
-                            })}
-                          />
-                          <button
-                            type="button"
-                            onClick={applyCoupon}
-                            disabled={!couponCode || couponValidation.status === "loading"}
-                            className={styles.applyButton}
-                          >
-                            {couponValidation.status === "loading" ? "Aplicando..." : "Aplicar"}
-                          </button>
-                        </div>
-                        {couponValidation.status !== "idle" && couponValidation.message && (
-                          <span
-                            className={
-                              couponValidation.status === "valid"
-                                ? styles.couponMessageSuccess
-                                : styles.couponMessageError
-                            }
-                          >
-                            {couponValidation.message}
-                          </span>
-                        )}
-                      </div>
                       <p className={styles.participants}>
                         {ticket.category.members > 1
                           ? "Dados dos participantes"
@@ -743,6 +710,39 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
                           </div>
                         );
                       })}
+                      <div className={styles.single}>
+                        <label htmlFor="couponCode">Cupom de desconto (opcional)</label>
+                        <div className={styles.couponRow}>
+                          <input
+                            id="couponCode"
+                            placeholder="INSIRA SEU CUPOM AQUI"
+                            type="text"
+                            {...register("couponCode", {
+                              setValueAs: (v) =>
+                                typeof v === "string" ? v.toUpperCase().trim() : v,
+                            })}
+                          />
+                          <button
+                            type="button"
+                            onClick={applyCoupon}
+                            disabled={!couponCode || couponValidation.status === "loading"}
+                            className={styles.applyButton}
+                          >
+                            {couponValidation.status === "loading" ? "Aplicando..." : "Aplicar"}
+                          </button>
+                        </div>
+                        {couponValidation.status !== "idle" && couponValidation.message && (
+                          <span
+                            className={
+                              couponValidation.status === "valid"
+                                ? styles.couponMessageSuccess
+                                : styles.couponMessageError
+                            }
+                          >
+                            {couponValidation.message}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   )}
                   {/* <ReCAPTCHA
