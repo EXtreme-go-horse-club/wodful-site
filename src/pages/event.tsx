@@ -1,8 +1,9 @@
+import type { HeadFC } from "gatsby";
 import * as React from "react";
 import { EventData } from "../components/EventData";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
-import { Head } from "../components/SEO";
+import { Seo } from "../components/SEO";
 
 interface EventDetailsProps {
   accessCode: string;
@@ -10,10 +11,20 @@ interface EventDetailsProps {
 
 export default function EventDetails({ accessCode }: EventDetailsProps) {
   return (
-    <Head>
+    <>
       <Header isSimple />
-      <EventData accessCode={accessCode}></EventData>
+      <EventData accessCode={accessCode} />
       <Footer isSimple />
-    </Head>
+    </>
   );
 }
+
+export const Head: HeadFC = () => (
+  <Seo
+    title="Detalhes do evento"
+    description="Informações e inscrição para competições CrossFit gerenciadas pela Wodful."
+    pathname="/event"
+    noindex
+    jsonLd={undefined}
+  />
+);

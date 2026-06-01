@@ -1,6 +1,7 @@
 import { HeadFC, Link, PageProps } from "gatsby";
 import * as React from "react";
 import { LottiePlayer } from "../components/LottiePlayer";
+import { Seo } from "../components/SEO";
 
 const headingStyles = {
   marginTop: 0,
@@ -50,4 +51,12 @@ const NotFoundPage: React.FC<PageProps> = () => (
 
 export default NotFoundPage;
 
-export const Head: HeadFC = () => <title>Not found</title>;
+export const Head: HeadFC = () => (
+  <Seo
+    title="Página não encontrada"
+    description="A página que você procura não existe ou foi movida."
+    pathname="/404"
+    noindex
+    jsonLd={undefined}
+  />
+);

@@ -1,6 +1,7 @@
+import type { HeadFC } from "gatsby";
 import * as React from "react";
 import { Header } from "../components/Header";
-import { Head } from "../components/SEO";
+import { Seo } from "../components/SEO";
 import { Success } from "../components/Success";
 
 type PageProps = {
@@ -35,9 +36,19 @@ export default function SubscriptionSuccess({ location }: PageProps) {
   }, [location?.search]);
 
   return (
-    <Head>
+    <>
       <Header isSimple />
       <Success status={status} accessCode={accessCode} />
-    </Head>
+    </>
   );
 }
+
+export const Head: HeadFC = () => (
+  <Seo
+    title="Confirmação de inscrição"
+    description="Status da inscrição ou pagamento do evento na Wodful."
+    pathname="/subscription-success"
+    noindex
+    jsonLd={undefined}
+  />
+);
