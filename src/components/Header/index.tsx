@@ -34,7 +34,7 @@ export const Header = ({ isSimple = false }: IHeaderProps) => {
   const closeMenu = () => setHamburgerOpen(false);
 
   const logo = (
-    <img src={HeaderLogo} alt="Wodful" className="h-6 w-auto md:h-7" />
+    <img src={HeaderLogo} alt="Wodful" className="h-8 w-auto" />
   );
 
   return (

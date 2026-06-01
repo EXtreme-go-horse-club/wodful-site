@@ -35,14 +35,14 @@ export const Footer = ({ isSimple = false }: IFooterProps) => {
               href="https://wodful.com"
               className="inline-flex rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
-              <img src={HeaderLogo} alt="Wodful" className="h-7 w-auto" />
+              <img src={HeaderLogo} alt="Wodful" className="h-8 w-auto" />
             </a>
           ) : (
             <Link
               to="/"
               className="inline-flex rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
-              <img src={HeaderLogo} alt="Wodful" className="h-7 w-auto" />
+              <img src={HeaderLogo} alt="Wodful" className="h-8 w-auto" />
             </Link>
           )}
 
