@@ -13,7 +13,10 @@ const SEO = ({ children }: SEOProps) => (
     <link rel="icon" href={FavIcon} type="image/svg+xml" />
     <meta name="description" content="Gestão de eventos de Crossfit" />
     <meta name="keywords" content="Crossfit, Fitness, Competição" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <meta name="google-adsense-account" content="ca-pub-6685231272236714" />
     {children}
   </>

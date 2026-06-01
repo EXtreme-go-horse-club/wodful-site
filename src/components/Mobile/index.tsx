@@ -1,17 +1,61 @@
+import { Link } from "gatsby";
 import * as React from "react";
 import Phone from "../../images/mock-celular.svg";
-import * as styles from "./styles.module.css";
+import { Container } from "../ui/Container";
+import { Section } from "../ui/Section";
+import { SectionHeading } from "../ui/SectionHeading";
+
+const bullets = [
+  "Acompanhe o placar de qualquer lugar",
+  "Veja quando é sua vez de competir",
+  "Cronograma sempre atualizado no bolso",
+];
 
 export const Mobile = () => (
-  <section className={styles.container}>
-    <article className={styles.container_left}>
-      <h1>Fácil para todos</h1>
-      <p className={styles.container_left}>
-        Experimente a liberdade de acompanhar sua competição de CrossFit em
-        tempo real! Cadastre-se agora e descubra como nossa plataforma pode
-        melhorar sua experiência.
-      </p>
-    </article>
-    <img className={styles.img_phone} src={Phone} alt="Ícone de celular" />
-  </section>
+  <Section className="bg-white/[0.02]">
+    <Container>
+      <div className="flex flex-col items-center gap-12 lg:flex-row lg:items-center lg:justify-between lg:gap-20">
+        <div className="max-w-lg text-center lg:text-left">
+          <SectionHeading
+            align="left"
+            className="max-w-none"
+            eyebrow="Para atletas e torcida"
+            title="A competição no bolso de quem importa"
+            description="Organizador no comando no desktop. Atleta e público acompanhando cada heat pelo celular — sem depender de print no grupo."
+          />
+          <ul className="mt-8 space-y-3 text-left">
+            {bullets.map((item) => (
+              <li
+                key={item}
+                className="flex items-start gap-3 text-gray-300"
+              >
+                <span
+                  className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
+                  aria-hidden
+                />
+                {item}
+              </li>
+            ))}
+          </ul>
+          <Link
+            to="#cta"
+            className="mt-8 inline-block text-sm font-semibold text-primary no-underline hover:underline"
+          >
+            Quero isso no meu evento →
+          </Link>
+        </div>
+        <div className="relative w-full max-w-sm shrink-0 lg:max-w-md">
+          <div
+            className="absolute -inset-12 rounded-full bg-primary/15 blur-3xl"
+            aria-hidden
+          />
+          <img
+            className="relative w-full drop-shadow-2xl"
+            src={Phone}
+            alt="Aplicativo Wodful em um smartphone"
+          />
+        </div>
+      </div>
+    </Container>
+  </Section>
 );

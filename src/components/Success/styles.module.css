@@ -35,7 +35,7 @@ body {
     max-width: 420px;
 }
 
-button {
+.container button {
     background: linear-gradient(90deg, #00b894, #00cec9);
     color: #fff;
     border: none;
@@ -44,11 +44,10 @@ button {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 40px;
     transition: all 0.3s ease;
 }
 
-button:hover {
+.container button:hover {
     opacity: 0.9;
     transform: scale(1.03);
 }
