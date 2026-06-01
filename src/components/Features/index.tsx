@@ -23,14 +23,14 @@ const features: Feature[] = [
     title: "Inscrições que escalam",
     highlight: "Menos fila, mais clareza",
     description:
-      "Formulário online, categorias organizadas e visão completa dos participantes antes do primeiro heat.",
+      "Formulário online, categorias organizadas e visão completa dos participantes.",
   },
   {
     icon: Trophy,
     title: "Scoreboard que empolga",
     highlight: "Ranking na hora",
     description:
-      "Cada resultado entra no placar ao vivo. Torcida gruda na tela — e você ganha credibilidade de evento grande.",
+      "Cada resultado entra no leaderboard ao vivo. Torcida gruda na tela e você ganha credibilidade de evento grande.",
   },
   {
     icon: Ticket,
@@ -44,21 +44,21 @@ const features: Feature[] = [
     title: "Cronograma inteligente",
     highlight: "Mudou? Atualiza já",
     description:
-      "Ajuste horários e raias quando o evento pedir. Atletas e staff veem a versão certa, na hora.",
+      "Ajuste horários e baterias em tempo real. Atletas e staff veem a versão certa, na hora.",
   },
   {
     icon: Arrows,
     title: "Operação sincronizada",
-    highlight: "Todos na mesma página",
+    highlight: "Tudo em uma única plataforma",
     description:
-      "Saiba o que está rolando em cada raia, do celular ou do computador — ideal para quem coordena de longe.",
+      "Saiba o que está rolando em cada bateria, do celular ou do computador. Ideal para quem coordena de longe.",
   },
   {
     icon: Clock,
-    title: "Dia de prova fluido",
-    highlight: "Menos improviso",
+    title: "Dia de competição fluido",
+    highlight: "Menos stress",
     description:
-      "Com tudo centralizado, sua equipe gasta energia na experiência — não apagando incêndio operacional.",
+      "Com tudo centralizado, sua equipe gasta energia na experiência. Não apagando incêndio operacional.",
   },
 ];
 
@@ -69,8 +69,8 @@ export const Feature = () => (
         id="features-heading"
         className="mb-10 sm:mb-14 md:mb-16"
         eyebrow="O que você ganha"
-        title="Tudo que um evento de CrossFit precisa"
-        description="Da primeira inscrição ao último pódio — ferramentas pensadas para quem já organizou competição e sabe onde aperta."
+        title="Tudo que uma competição CrossFit precisa"
+        description="Da primeira inscrição ao último pódio. Ferramentas pensadas para quem já organizou competição e sabe onde aperta."
       />
       <ul className="grid list-none gap-5 p-0 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
         {features.map((feat, index) => (

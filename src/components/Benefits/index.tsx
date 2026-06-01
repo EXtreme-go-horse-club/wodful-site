@@ -17,19 +17,19 @@ const benefits: Benefit[] = [
     icon: Strategy,
     title: "Baterias e raias no automático",
     description:
-      "A competição evolui e a plataforma acompanha. Você não fica recalculando bateria na mão entre um heat e outro.",
+      "A competição evolui e a plataforma acompanha. Você não fica recalculando bateria na mão entre um prova e outra.",
   },
   {
     icon: Person,
     title: "Produto que não para",
     description:
-      "Melhorias contínuas com quem vive o ecossistema CrossFit — feedback de organizadores vira funcionalidade de verdade.",
+      "Melhorias contínuas com quem vive o ecossistema CrossFit. Feedback de organizadores vira funcionalidade de verdade.",
   },
   {
     icon: ClockWise,
     title: "Suporte de quem entende",
     description:
-      "Dúvida no dia do evento? Fala com gente que já passou pelo mesmo stress de produção e sabe a urgência.",
+      "Dúvida no dia do evento? Fale com gente que já passou pelo mesmo stress de produção e sabe a urgência.",
   },
 ];
 
@@ -41,7 +41,7 @@ export const Benefits = () => (
         className="mb-10 sm:mb-14 md:mb-16"
         eyebrow="Diferenciais Wodful"
         title="Por que organizadores escolhem a gente"
-        description="Não é só software — é parceria para o seu evento sair redondo do planejamento ao pódio."
+        description="Não é só software. É parceria para o seu evento sair redondo do planejamento ao pódio."
       />
       <ul className="grid list-none gap-5 p-0 md:grid-cols-3 md:gap-6">
         {benefits.map((benefit) => (

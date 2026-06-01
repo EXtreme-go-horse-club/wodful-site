@@ -21,7 +21,7 @@ export const Mobile = () => (
             className="max-w-none"
             eyebrow="Para atletas e torcida"
             title="A competição no bolso de quem importa"
-            description="Organizador no comando no desktop. Atleta e público acompanhando cada heat pelo celular — sem depender de print no grupo."
+            description="Organizador no comando no desktop. Atleta e público acompanhando cada prova pelo celular. Sem depender de print no grupo."
           />
           <ul className="mt-8 space-y-3 text-left">
             {bullets.map((item) => (

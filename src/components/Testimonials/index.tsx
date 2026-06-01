@@ -13,24 +13,24 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
   {
     quote:
-      "O placar ao vivo virou parte do show. O público parou de me perguntar 'quem está ganhando?' — está tudo na tela.",
-    name: "Rafael M.",
+      "O leaderboard ao vivo virou parte do show. O público parou de me perguntar 'quem está ganhando?' e está tudo na tela e você pode acompnhar de qualquer lugar.",
+    name: "Rafael N.",
     role: "Organizador",
-    organization: "CrossFit Interior Open",
+    organization: "Team Nadai Games",
   },
   {
     quote:
-      "Abri inscrições numa sexta e no domingo já tinha lista organizada por categoria. Isso antes me tomava dias.",
+      "Abri a inscrição online numa sexta e no domingo já tinha lista organizada por categoria. Isso antes me tomava muito tempo.",
     name: "Camila S.",
     role: "Head Coach",
     organization: "Box Alliance",
   },
   {
     quote:
-      "Atrasamos 40 minutos e conseguimos remontar o cronograma sem gritaria no grupo. Todo mundo viu a atualização no app.",
-    name: "Bruno T.",
-    role: "Diretor de eventos",
-    organization: "South Games",
+      "Lançamos os resultados da primeira próva tão rápido que conseguimos aproveitar o evento inteiro. Todo mundo viu a atualização no leaderboard ao vivo.",
+    name: "Diego A.",
+    role: "Organizador",
+    organization: "Wódio Games",
   },
 ];
 
@@ -58,7 +58,7 @@ export const Testimonials = () => (
         className="mb-10 sm:mb-14 md:mb-16"
         eyebrow="Na prática"
         title="Quem já rodou evento com a Wodful"
-        description="Histórias reais de quem trocou planilha e improviso por operação profissional."
+        description="Histórias reais de quem trocou planilha e improviso por operação profissional. E que amam a plataforma."
       />
 
       <ul className="grid list-none gap-5 p-0 md:grid-cols-3 md:gap-8">

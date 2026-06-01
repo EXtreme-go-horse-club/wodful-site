@@ -31,11 +31,11 @@ export const Banner = () => (
               id="banner-heading"
               className="font-display text-2xl font-bold uppercase leading-tight tracking-tight text-white sm:text-3xl md:text-4xl lg:text-5xl"
             >
-              Seu evento merece a mesma energia do piso
+              Seu evento merece a mesma energia da torcida
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-gray-300 sm:text-base">
-              A Wodful coloca organização e emoção na mesma tela — para você
-              brilhar como produção, não só como nome no cartaz.
+              A Wodful coloca organização e emoção na mesma tela. Para você
+              brilhar no seu evento. Não só como nome no cartaz.
             </p>
           </div>
         </div>
