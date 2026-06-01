@@ -1,30 +1,39 @@
 import * as React from "react";
-import * as styles from "./styles.module.css";
 
 type HamburgerProps = {
   isOpen: boolean;
 };
 
 export default function Hamburger({ isOpen = false }: HamburgerProps) {
+  if (isOpen) {
+    return (
+      <svg
+        className="h-6 w-6 shrink-0 text-white"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        aria-hidden
+      >
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    );
+  }
+
   return (
-    <>
-      <aside className={styles.hamburger}>
-        <span
-          className={`${styles.burger} ${
-            isOpen ? styles.burger1_open : styles.burger1_close
-          }`}
-        />
-        <span
-          className={`${styles.burger} ${
-            isOpen ? styles.burger2_open : styles.burger2_close
-          }`}
-        />
-        <span
-          className={`${styles.burger} ${
-            isOpen ? styles.burger3_open : styles.burger3_close
-          }`}
-        />
-      </aside>
-    </>
+    <svg
+      className="h-6 w-6 shrink-0 text-white"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      aria-hidden
+    >
+      <path d="M4 7h16" />
+      <path d="M4 12h16" />
+      <path d="M4 17h16" />
+    </svg>
   );
 }
