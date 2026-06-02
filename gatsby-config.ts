@@ -8,6 +8,7 @@ const siteUrl =
   process.env.GATSBY_SITE_URL?.replace(/\/$/, "") || "https://wodful.com";
 
 const config: GatsbyConfig = {
+  trailingSlash: "always",
   siteMetadata: {
     title: "Wodful",
     description:

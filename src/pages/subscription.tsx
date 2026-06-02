@@ -1,15 +1,25 @@
-import type { HeadFC } from "gatsby";
+import type { HeadFC, PageProps } from "gatsby";
 import * as React from "react";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
+import { useAccessCodeFromPath } from "../hooks/useAccessCodeFromPath";
 import { Seo } from "../components/SEO";
 import { SubscriptionData } from "../components/Subscription";
 
-interface EventDetailsProps {
-  accessCode: string;
-}
+type SubscriptionPageProps = PageProps & {
+  accessCode?: string;
+  params?: { accessCode?: string };
+};
 
-export default function EventSubscriptions({ accessCode }: EventDetailsProps) {
+export default function EventSubscriptions({
+  accessCode: accessCodeProp,
+  params,
+}: SubscriptionPageProps) {
+  const accessCode = useAccessCodeFromPath(
+    "subscription",
+    accessCodeProp ?? params?.accessCode
+  );
+
   return (
     <>
       <Header isSimple />

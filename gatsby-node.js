@@ -1,20 +1,18 @@
-const path = require("path");
-
-exports.onCreatePage = async ({ page, actions }) => {
+exports.onCreatePage = ({ page, actions }) => {
   const { createPage } = actions;
-  if (page.path.match(/^\/event/)) {
-    createPage({
-      path: "/event",
-      matchPath: "/event/:accessCode",
-      component: path.resolve("src/pages/event.tsx"),
-    });
+
+  const isEventPage =
+    page.path === "/event/" || page.path === "/event";
+  const isSubscriptionPage =
+    page.path === "/subscription/" || page.path === "/subscription";
+
+  if (isEventPage && !page.matchPath) {
+    page.matchPath = "/event/:accessCode";
+    createPage(page);
   }
 
-  if (page.path.match(/^\/subscription/)) {
-    createPage({
-      path: "/subscription",
-      matchPath: "/subscription/:accessCode",
-      component: path.resolve("src/pages/subscription.tsx"),
-    });
+  if (isSubscriptionPage && !page.matchPath) {
+    page.matchPath = "/subscription/:accessCode";
+    createPage(page);
   }
 };
