@@ -2,7 +2,10 @@ import { navigate } from "gatsby";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
+import Modal from "react-modal";
 import { useForm } from "react-hook-form";
+import { SUBSCRIPTION_MAX_WIDTH_CLASS } from "../../constants/eventBanner";
+import ArrowRight from "../../images/arrow-right.svg";
 import Calendar from "../../images/calendar-black.svg";
 import MapPin from "../../images/map-pin.svg";
 import {
@@ -12,17 +15,16 @@ import {
 } from "../../models/EventResponse";
 import { IParticipantForm } from "../../models/ParticipantDTO";
 import { EventService } from "../../services/events";
+import { ParticipantsService } from "../../services/participants";
+import type { ValidateCouponResponse } from "../../services/payments";
 import { SubscriptionService } from "../../services/subscription";
 import { isValidDocument, regexOnlyNumber } from "../../utils";
-import * as styles from "./styles.module.css";
-
-import Modal from "react-modal";
-
-import ArrowRight from "../../images/arrow-right.svg";
-import { ParticipantsService } from "../../services/participants";
+import { formatPriceBRL } from "../../utils/formatPrice";
 import { Feedback } from "../Feedback";
-import { Loading } from "../Loading";
-import type { ValidateCouponResponse } from "../../services/payments";
+import { Container } from "../ui/Container";
+import { fieldInputClass, FormField } from "../ui/FormField";
+import { SubscriptionSkeleton } from "./SubscriptionSkeleton";
+import { SubscriptionSummary } from "./SubscriptionSummary";
 type ISubscriptionData = {
   accessCode: string;
 };
@@ -154,13 +156,6 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     result?: ValidateCouponResponse;
   }>({ status: "idle" });
 
-  const formatCurrency = React.useCallback((value: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(value);
-  }, []);
-
   const applyCoupon = React.useCallback(async () => {
     const code = (couponCode || "").trim().toUpperCase();
     if (!code || !ticket?.id) return;
@@ -203,7 +198,7 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
         message: "Não foi possível validar o cupom agora. Tente novamente.",
       });
     }
-  }, [couponCode, ticket?.id, setValue, formatCurrency]);
+  }, [couponCode, ticket?.id, setValue]);
 
   const ticketPriceNumber = React.useMemo(() => {
     const raw: any = ticket?.price as any;
@@ -229,8 +224,8 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
   const discountBadgeText = React.useMemo(() => {
     if (!discounted) return null;
     if (discounted.type === "PERCENTAGE") return `-${discounted.value}%`;
-    return `-${formatCurrency(discounted.discountAmount)}`;
-  }, [discounted, formatCurrency]);
+    return `-${formatPriceBRL(discounted.discountAmount)}`;
+  }, [discounted]);
 
   const PostSubscription = React.useCallback(
     async (subscription: IParticipantForm) => {
@@ -311,511 +306,476 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
   return (
     <>
       {!isLoading ? (
-        <div className={styles.container}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input
-              type="hidden"
-              name="fake_field"
-              value={fake_field}
-              onChange={(e) => setFakeField(e.target.value)}
-            />
-            <main className={styles.main}>
-              <section className={styles.content}>
-                <header className={styles.heading}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginTop: "16px",
-                    }}
-                  >
-                    <img
-                      src={ArrowRight}
-                      style={{
-                        width: "32px",
-                        transform: "rotate(180deg)",
-                        cursor: "pointer",
-                      }}
-                      alt="Seguir para inscrição"
-                      role="button"
-                      onClick={() => navigate(`/event/${accessCode}/`)}
-                    />
-                    <p className={styles.paragraph}>Voltar</p>
-                  </div>
-                  <article className={styles.event_data}>
-                    <h2>{event?.name}</h2>
-                    <div className={styles.event_info}>
-                      <img
-                        src={Calendar}
-                        alt="ícone de calendário, mostrando a data do evento"
-                      />
-                      <p className={styles.paragraph}>
-                        {event?.startDate} até {event?.endDate}
-                      </p>
-                    </div>
-                    <div className={styles.event_info}>
-                      <img src={MapPin} alt="ícone de localização do evento" />
-                      <p className={styles.paragraph}>{event?.address}</p>
-                    </div>
-                  </article>
-                </header>
+        <div className="min-h-screen bg-slate-50 text-gray-900">
+          <Container className={`py-6 sm:py-10 ${SUBSCRIPTION_MAX_WIDTH_CLASS}`}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <input
+                type="hidden"
+                name="fake_field"
+                value={fake_field}
+                onChange={(e) => setFakeField(e.target.value)}
+              />
 
-                <>
-                  {ticket && (
-                    <div className={styles.form}>
-                      <p className={styles.responsible}>Dados do responsável</p>
-                      <div className={styles.single}>
-                        <label htmlFor="nickname">
-                          {ticket!.category.members > 1
-                            ? "Nome do time"
-                            : "Nome ou Apelido"}
-                        </label>
-                        <input
-                          className={!!errors.nickname ? styles.invalid : ""}
-                          autoFocus
+              <button
+                type="button"
+                onClick={() => navigate(`/event/${accessCode}/`)}
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition hover:text-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                <img
+                  src={ArrowRight}
+                  alt=""
+                  className="h-5 w-5 rotate-180"
+                  aria-hidden
+                />
+                Voltar
+              </button>
+
+              <header className="mt-4 border-b border-gray-200/80 pb-6 sm:mt-6">
+                <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 sm:text-3xl">
+                  {event?.name}
+                </h1>
+                <ul className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-x-6">
+                  <li className="flex items-center gap-2 text-sm text-gray-600">
+                    <img
+                      src={Calendar}
+                      alt=""
+                      className="h-4 w-4 shrink-0 opacity-70"
+                      aria-hidden
+                    />
+                    <span>
+                      {event?.startDate} até {event?.endDate}
+                    </span>
+                  </li>
+                  {event?.address ? (
+                    <li className="flex items-center gap-2 text-sm text-gray-600">
+                      <img
+                        src={MapPin}
+                        alt=""
+                        className="h-4 w-4 shrink-0 opacity-70"
+                        aria-hidden
+                      />
+                      <span>{event.address}</span>
+                    </li>
+                  ) : null}
+                </ul>
+              </header>
+
+              {ticket ? (
+                <div className="mt-8 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(300px,380px)] lg:items-start lg:gap-10 xl:gap-12">
+                  <div className="min-w-0 space-y-8">
+                    <section aria-labelledby="dados-responsavel">
+                      <h2
+                        id="dados-responsavel"
+                        className="text-lg font-semibold text-gray-900"
+                      >
+                        Dados do responsável
+                      </h2>
+
+                      <div className="mt-5 space-y-4">
+                        <FormField
                           id="nickname"
-                          placeholder={
-                            ticket!.category.members > 1
-                              ? "Wodful team"
-                              : "João da silva"
+                          label={
+                            ticket.category.members > 1
+                              ? "Nome do time"
+                              : "Nome ou Apelido"
                           }
-                          type="text"
-                          {...register("nickname", {
-                            onBlur: (ev) =>
-                              getParticipant({
-                                accessCode: event?.accessCode!,
-                                search: ev.target.value,
-                                type: "nickname",
-                              }),
-                            required: Validation.invalidEmpty,
-                            minLength: {
-                              value: 3,
-                              message: Validation.invalidSM,
-                            },
-                            maxLength: {
-                              value: 50,
-                              message: Validation.invalidLG,
-                            },
-                          })}
-                        />
-                        <span className={styles.error}>
-                          {errors.nickname && errors.nickname.message}
-                        </span>
-                      </div>
-                      <div className={styles.single}>
-                        <label htmlFor="responsibleName">
-                          Nome do responsável
-                        </label>
-                        <input
-                          className={
-                            !!errors.responsibleName ? styles.invalid : ""
-                          }
-                          id="responsibleName"
-                          placeholder="João da silva"
-                          type="text"
-                          {...register("responsibleName", {
-                            required: Validation.invalidEmpty,
-                            minLength: {
-                              value: 3,
-                              message: Validation.invalidSM,
-                            },
-                            maxLength: {
-                              value: 50,
-                              message: Validation.invalidLG,
-                            },
-                          })}
-                        />
-                        <span className={styles.error}>
-                          {errors.responsibleName &&
-                            errors.responsibleName.message}
-                        </span>
-                      </div>
-                      <section className={styles.double}>
-                        <div className={styles.single}>
-                          <label htmlFor="responsibleEmail">
-                            E-mail do responsável
-                          </label>
+                          error={errors.nickname?.message}
+                        >
                           <input
-                            className={
-                              !!errors.responsibleEmail ? styles.invalid : ""
+                            autoFocus
+                            id="nickname"
+                            placeholder={
+                              ticket.category.members > 1
+                                ? "Wodful team"
+                                : "João da silva"
                             }
-                            id="responsibleEmail"
-                            placeholder="joao@email.com"
-                            type="email"
-                            {...register("responsibleEmail", {
+                            type="text"
+                            className={fieldInputClass(!!errors.nickname)}
+                            {...register("nickname", {
+                              onBlur: (ev) =>
+                                getParticipant({
+                                  accessCode: event?.accessCode!,
+                                  search: ev.target.value,
+                                  type: "nickname",
+                                }),
                               required: Validation.invalidEmpty,
                               minLength: {
-                                value: 4,
+                                value: 3,
                                 message: Validation.invalidSM,
                               },
                               maxLength: {
                                 value: 50,
                                 message: Validation.invalidLG,
                               },
-                              pattern: {
-                                value:
-                                  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                message: Validation.invalid,
-                              },
                             })}
                           />
-                          <span className={styles.error}>
-                            {errors.responsibleEmail &&
-                              errors.responsibleEmail.message}
-                          </span>
-                        </div>
-                        <div className={styles.single}>
-                          <label htmlFor="responsiblePhone">
-                            Telefone do responsável
-                          </label>
+                        </FormField>
+
+                        <FormField
+                          id="responsibleName"
+                          label="Nome do responsável"
+                          error={errors.responsibleName?.message}
+                        >
                           <input
-                            className={
-                              !!errors.responsiblePhone ? styles.invalid : ""
-                            }
-                            id="responsiblePhone"
-                            placeholder="xx x xxxx-xxxx"
-                            type="tel"
-                            {...register("responsiblePhone", {
+                            id="responsibleName"
+                            placeholder="João da silva"
+                            type="text"
+                            className={fieldInputClass(!!errors.responsibleName)}
+                            {...register("responsibleName", {
                               required: Validation.invalidEmpty,
                               minLength: {
-                                value: 9,
+                                value: 3,
                                 message: Validation.invalidSM,
                               },
                               maxLength: {
-                                value: 13,
+                                value: 50,
                                 message: Validation.invalidLG,
-                              },
-                              onChange(event) {
-                                formatPhone(event.target.value);
                               },
                             })}
                           />
-                          <span className={styles.error}>
-                            {errors.responsiblePhone &&
-                              errors.responsiblePhone.message}
-                          </span>
+                        </FormField>
+
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                          <FormField
+                            id="responsibleEmail"
+                            label="E-mail do responsável"
+                            error={errors.responsibleEmail?.message}
+                          >
+                            <input
+                              id="responsibleEmail"
+                              placeholder="joao@email.com"
+                              type="email"
+                              className={fieldInputClass(!!errors.responsibleEmail)}
+                              {...register("responsibleEmail", {
+                                required: Validation.invalidEmpty,
+                                minLength: {
+                                  value: 4,
+                                  message: Validation.invalidSM,
+                                },
+                                maxLength: {
+                                  value: 50,
+                                  message: Validation.invalidLG,
+                                },
+                                pattern: {
+                                  value:
+                                    /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                  message: Validation.invalid,
+                                },
+                              })}
+                            />
+                          </FormField>
+
+                          <FormField
+                            id="responsiblePhone"
+                            label="Telefone do responsável"
+                            error={errors.responsiblePhone?.message}
+                          >
+                            <input
+                              id="responsiblePhone"
+                              placeholder="xx x xxxx-xxxx"
+                              type="tel"
+                              className={fieldInputClass(!!errors.responsiblePhone)}
+                              {...register("responsiblePhone", {
+                                required: Validation.invalidEmpty,
+                                minLength: {
+                                  value: 9,
+                                  message: Validation.invalidSM,
+                                },
+                                maxLength: {
+                                  value: 13,
+                                  message: Validation.invalidLG,
+                                },
+                                onChange(event) {
+                                  formatPhone(event.target.value);
+                                },
+                              })}
+                            />
+                          </FormField>
                         </div>
-                      </section>
-                      <p className={styles.participants}>
+                      </div>
+                    </section>
+
+                    <section aria-labelledby="dados-participantes">
+                      <h2
+                        id="dados-participantes"
+                        className="text-lg font-semibold text-gray-900"
+                      >
                         {ticket.category.members > 1
                           ? "Dados dos participantes"
                           : "Dados do participante"}
-                      </p>
-                      {indexes.map((index) => {
-                        const participants = `participants[${index}]`;
-                        return (
-                          <div className={styles.formContainer} key={index}>
-                            <div className={styles.single}>
-                              <label htmlFor={`${participants}.name`}>
-                                {indexes.length > 1
-                                  ? `Atleta ${index + 1}`
-                                  : "Nome"}
-                              </label>
-                              <input
-                                id={`${participants}.name`}
-                                className={
-                                  !!errors.participants &&
-                                  !!errors.participants![index]?.name
-                                    ? styles.invalid
-                                    : ""
-                                }
-                                placeholder="João da silva"
-                                type="text"
-                                {...register(`participants.${index}.name`, {
-                                  required: Validation.invalidEmpty,
-                                  minLength: {
-                                    value: 4,
-                                    message: Validation.invalidSM,
-                                  },
-                                  maxLength: {
-                                    value: 50,
-                                    message: Validation.invalidLG,
-                                  },
-                                })}
-                              />
-                              <span className={styles.error}>
-                                {errors.participants &&
-                                  errors.participants![index]?.name &&
-                                  errors.participants![index]?.name?.message}
-                              </span>
-                            </div>
-                            <section className={styles.double}>
-                              <div className={styles.single}>
-                                <label
-                                  htmlFor={`${participants}.identificationCode`}
-                                >
-                                  Documento
-                                </label>
-                                <input
-                                  id={`${participants}.identificationCode`}
-                                  className={
-                                    !!errors.participants &&
-                                    !!errors.participants![index]
-                                      ?.identificationCode
-                                      ? styles.invalid
-                                      : ""
-                                  }
-                                  placeholder="CPF"
-                                  type="tel"
-                                  {...register(
-                                    `participants.${index}.identificationCode`,
-                                    {
-                                      required: Validation.invalidEmpty,
-                                      onBlur: (ev) =>
-                                        getParticipant({
-                                          accessCode: event?.accessCode!,
-                                          search: ev.target.value,
-                                          type: "code",
-                                          index,
-                                        }),
-                                      minLength: {
-                                        value: 11,
-                                        message: "Mínimo 11 caracteres",
-                                      },
+                      </h2>
 
-                                      onChange(event) {
-                                        formatDocument(
-                                          event.target.value,
-                                          index
-                                        );
-                                      },
-                                      validate: (value) =>
-                                        isValidDocument(value) ||
-                                        Validation.invalid,
-                                    }
-                                  )}
-                                />
-                                <span className={styles.error}>
-                                  {errors.participants &&
-                                    errors.participants![index]
-                                      ?.identificationCode &&
-                                    errors.participants![index]
-                                      ?.identificationCode?.message}
-                                </span>
-                              </div>
+                      <div className="mt-5 space-y-6">
+                        {indexes.map((index) => {
+                          const participants = `participants[${index}]`;
+                          const participantErrors = errors.participants?.[index];
 
-                              <div className={styles.single}>
-                                <label htmlFor={`${participants}.tShirtSize`}>
-                                  Camiseta
-                                </label>
-                                <select
-                                  id={`${participants}.tShirtSize`}
-                                  disabled={
-                                    tshirtConfigs?.hasTshirt === "false"
-                                  }
-                                  className={
-                                    !!errors.participants &&
-                                    !!errors.participants![index]?.tShirtSize
-                                      ? styles.invalid
-                                      : ""
-                                  }
-                                  {...register(
-                                    `participants.${index}.tShirtSize`,
-                                    {
-                                      required: Validation.invalidEmpty,
-                                      disabled:
-                                        tshirtConfigs?.hasTshirt === "false",
-                                    }
-                                  )}
+                          return (
+                            <div
+                              key={index}
+                              className="rounded-xl border border-gray-200/80 bg-white p-5 sm:p-6"
+                            >
+                              {indexes.length > 1 ? (
+                                <p className="mb-4 text-sm font-semibold text-gray-800">
+                                  Atleta {index + 1}
+                                </p>
+                              ) : null}
+
+                              <div className="space-y-4">
+                                <FormField
+                                  id={`${participants}.name`}
+                                  label={indexes.length > 1 ? "Nome" : "Nome"}
+                                  error={participantErrors?.name?.message}
                                 >
-                                  <option value="">
-                                    {tshirtConfigs?.hasTshirt === "true"
-                                      ? "Selecione um tamanho"
-                                      : "Sem camiseta"}
-                                  </option>
-                                  {tshirtConfigs?.tShirtSizes?.map((size) => (
-                                    <option key={size} value={size}>
-                                      {size}
-                                    </option>
-                                  ))}
-                                </select>
-                                <span className={styles.error}>
-                                  {errors.participants &&
-                                    errors.participants![index]?.tShirtSize &&
-                                    errors.participants![index]?.tShirtSize
-                                      ?.message}
-                                </span>
-                              </div>
-                            </section>
-                            <section className={styles.double}>
-                              <div className={styles.single}>
-                                <label htmlFor={`${participants}.city`}>
-                                  Cidade
-                                </label>
-                                <input
-                                  id={`${participants}.city`}
-                                  className={
-                                    !!errors.participants &&
-                                    !!errors.participants![index]?.city
-                                      ? styles.invalid
-                                      : ""
-                                  }
-                                  placeholder="Rua do wodful, paraná"
-                                  type="text"
-                                  {...register(`participants.${index}.city`, {
-                                    required: Validation.invalidEmpty,
-                                    minLength: {
-                                      value: 4,
-                                      message: Validation.invalidSM,
-                                    },
-                                    maxLength: {
-                                      value: 50,
-                                      message: Validation.invalidLG,
-                                    },
-                                  })}
-                                />
-                                <span className={styles.error}>
-                                  {errors.participants &&
-                                    errors.participants![index]?.city &&
-                                    errors.participants![index]?.city?.message}
-                                </span>
-                              </div>
-                              <div className={styles.single}>
-                                <label htmlFor={`${participants}.affiliation`}>
-                                  Box do participante
-                                </label>
-                                <input
-                                  id={`${participants}.affiliation`}
-                                  placeholder="CT Wodful"
-                                  type="text"
-                                  className={
-                                    !!errors.participants &&
-                                    !!errors.participants![index]?.affiliation
-                                      ? styles.invalid
-                                      : ""
-                                  }
-                                  {...register(
-                                    `participants.${index}.affiliation`,
-                                    {
+                                  <input
+                                    id={`${participants}.name`}
+                                    placeholder="João da silva"
+                                    type="text"
+                                    className={fieldInputClass(
+                                      !!participantErrors?.name
+                                    )}
+                                    {...register(`participants.${index}.name`, {
                                       required: Validation.invalidEmpty,
                                       minLength: {
-                                        value: 3,
+                                        value: 4,
                                         message: Validation.invalidSM,
                                       },
                                       maxLength: {
                                         value: 50,
                                         message: Validation.invalidLG,
                                       },
+                                    })}
+                                  />
+                                </FormField>
+
+                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                  <FormField
+                                    id={`${participants}.identificationCode`}
+                                    label="Documento"
+                                    error={
+                                      participantErrors?.identificationCode
+                                        ?.message
                                     }
-                                  )}
-                                />
-                                <span className={styles.error}>
-                                  {errors.participants &&
-                                    errors.participants![index]?.affiliation &&
-                                    errors.participants![index]?.affiliation
-                                      ?.message}
-                                </span>
+                                  >
+                                    <input
+                                      id={`${participants}.identificationCode`}
+                                      placeholder="CPF"
+                                      type="tel"
+                                      className={fieldInputClass(
+                                        !!participantErrors?.identificationCode
+                                      )}
+                                      {...register(
+                                        `participants.${index}.identificationCode`,
+                                        {
+                                          required: Validation.invalidEmpty,
+                                          onBlur: (ev) =>
+                                            getParticipant({
+                                              accessCode: event?.accessCode!,
+                                              search: ev.target.value,
+                                              type: "code",
+                                              index,
+                                            }),
+                                          minLength: {
+                                            value: 11,
+                                            message: "Mínimo 11 caracteres",
+                                          },
+                                          onChange(event) {
+                                            formatDocument(
+                                              event.target.value,
+                                              index
+                                            );
+                                          },
+                                          validate: (value) =>
+                                            isValidDocument(value) ||
+                                            Validation.invalid,
+                                        }
+                                      )}
+                                    />
+                                  </FormField>
+
+                                  <FormField
+                                    id={`${participants}.tShirtSize`}
+                                    label="Camiseta"
+                                    error={participantErrors?.tShirtSize?.message}
+                                  >
+                                    <select
+                                      id={`${participants}.tShirtSize`}
+                                      disabled={tshirtConfigs?.hasTshirt === "false"}
+                                      className={fieldInputClass(
+                                        !!participantErrors?.tShirtSize
+                                      )}
+                                      {...register(
+                                        `participants.${index}.tShirtSize`,
+                                        {
+                                          required: Validation.invalidEmpty,
+                                          disabled:
+                                            tshirtConfigs?.hasTshirt === "false",
+                                        }
+                                      )}
+                                    >
+                                      <option value="">
+                                        {tshirtConfigs?.hasTshirt === "true"
+                                          ? "Selecione um tamanho"
+                                          : "Sem camiseta"}
+                                      </option>
+                                      {tshirtConfigs?.tShirtSizes?.map((size) => (
+                                        <option key={size} value={size}>
+                                          {size}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </FormField>
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                  <FormField
+                                    id={`${participants}.city`}
+                                    label="Cidade"
+                                    error={participantErrors?.city?.message}
+                                  >
+                                    <input
+                                      id={`${participants}.city`}
+                                      placeholder="Rua do wodful, paraná"
+                                      type="text"
+                                      className={fieldInputClass(
+                                        !!participantErrors?.city
+                                      )}
+                                      {...register(`participants.${index}.city`, {
+                                        required: Validation.invalidEmpty,
+                                        minLength: {
+                                          value: 4,
+                                          message: Validation.invalidSM,
+                                        },
+                                        maxLength: {
+                                          value: 50,
+                                          message: Validation.invalidLG,
+                                        },
+                                      })}
+                                    />
+                                  </FormField>
+
+                                  <FormField
+                                    id={`${participants}.affiliation`}
+                                    label="Box do participante"
+                                    error={participantErrors?.affiliation?.message}
+                                  >
+                                    <input
+                                      id={`${participants}.affiliation`}
+                                      placeholder="CT Wodful"
+                                      type="text"
+                                      className={fieldInputClass(
+                                        !!participantErrors?.affiliation
+                                      )}
+                                      {...register(
+                                        `participants.${index}.affiliation`,
+                                        {
+                                          required: Validation.invalidEmpty,
+                                          minLength: {
+                                            value: 3,
+                                            message: Validation.invalidSM,
+                                          },
+                                          maxLength: {
+                                            value: 50,
+                                            message: Validation.invalidLG,
+                                          },
+                                        }
+                                      )}
+                                    />
+                                  </FormField>
+                                </div>
                               </div>
-                            </section>
-                          </div>
-                        );
-                      })}
-                      <div className={styles.single}>
-                        <label htmlFor="couponCode">Cupom de desconto (opcional)</label>
-                        <div className={styles.couponRow}>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </section>
+
+                    <section aria-labelledby="cupom-desconto">
+                      <FormField
+                        id="couponCode"
+                        label="Cupom de desconto (opcional)"
+                        error={
+                          couponValidation.status === "invalid"
+                            ? couponValidation.message
+                            : undefined
+                        }
+                      >
+                        <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
                           <input
                             id="couponCode"
                             placeholder="INSIRA SEU CUPOM AQUI"
                             type="text"
+                            className={`${fieldInputClass(false)} sm:flex-1`}
                             {...register("couponCode", {
                               setValueAs: (v) =>
-                                typeof v === "string" ? v.toUpperCase().trim() : v,
+                                typeof v === "string"
+                                  ? v.toUpperCase().trim()
+                                  : v,
                             })}
                           />
                           <button
                             type="button"
                             onClick={applyCoupon}
-                            disabled={!couponCode || couponValidation.status === "loading"}
-                            className={styles.applyButton}
+                            disabled={
+                              !couponCode ||
+                              couponValidation.status === "loading"
+                            }
+                            className="inline-flex min-h-[44px] shrink-0 items-center justify-center rounded-lg border border-primary bg-primary/5 px-5 text-sm font-semibold text-primary transition hover:bg-primary/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50 sm:min-w-[7.5rem]"
                           >
-                            {couponValidation.status === "loading" ? "Aplicando..." : "Aplicar"}
+                            {couponValidation.status === "loading"
+                              ? "Aplicando..."
+                              : "Aplicar"}
                           </button>
                         </div>
-                        {couponValidation.status !== "idle" && couponValidation.message && (
-                          <span
-                            className={
-                              couponValidation.status === "valid"
-                                ? styles.couponMessageSuccess
-                                : styles.couponMessageError
-                            }
-                          >
+                        {couponValidation.status === "valid" &&
+                        couponValidation.message ? (
+                          <span className="text-sm text-emerald-600" role="status">
                             {couponValidation.message}
                           </span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                  {/* <ReCAPTCHA
-                    sitekey={`${process.env.GATSBY_SIE_KEY}`}
-                    onChange={(token) => onChange(token!)}
-                    size="normal"
-                    onExpired={() => recaptchaCodeRef.current?.reset()}
-                  /> */}
-                </>
-              </section>
-              <section className={styles.right}>
-                <div className={styles.rightTitle}>Inscrições</div>
-                <section>
-                  <article className={styles.tickets}>
-                    <div>
-                      <p>
-                        <b>{ticket?.name}</b>
-                      </p>
-                      <p>{ticket?.description}</p>
-                      <div className={styles.ticketPriceRow}>
-                        {discounted ? (
-                          <>
-                            <span className={styles.ticketPriceOriginal}>
-                              {formatCurrency(discounted.original)}
-                            </span>
-                            <span className={styles.ticketPriceFinal}>
-                              {formatCurrency(discounted.final)}
-                            </span>
-                            {discountBadgeText && (
-                              <span className={styles.discountBadge}>
-                                {discountBadgeText}
-                              </span>
-                            )}
-                          </>
-                        ) : (
-                          <span className={styles.ticketPriceSingle}>
-                            {formatCurrency(ticketPriceNumber)}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </article>
+                        ) : null}
+                      </FormField>
+                    </section>
+                  </div>
 
-                  <button disabled={!canSubmit} type="submit">
-                    Enviar
-                  </button>
-                </section>
-              </section>
-            </main>
-          </form>
+                  <div className="mt-8 lg:mt-0 lg:sticky lg:top-6">
+                    <SubscriptionSummary
+                      ticket={ticket}
+                      discounted={discounted}
+                      discountBadgeText={discountBadgeText}
+                      ticketPriceNumber={ticketPriceNumber}
+                      canSubmit={canSubmit}
+                    />
+                  </div>
+                </div>
+              ) : null}
+            </form>
+          </Container>
+
           <Modal
             isOpen={modalState.isOpen}
             onRequestClose={() => {
               setModalState({ isOpen: false });
               if (modalState.type === "success") navigate("/#");
             }}
-            className={styles.modal}
+            className="relative mx-auto w-full max-w-md outline-none"
+            overlayClassName="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4"
             ariaHideApp={false}
-            style={{
-              overlay: {
-                backgroundColor: "#222222BF",
-              },
-            }}
           >
             <Feedback
               type={modalState.type}
-              link={modalState.type === 'success' ? (modalState as any).link ?? ticket?.paymentLink ?? null : null}
+              link={
+                modalState.type === "success"
+                  ? (modalState as ModalType).link ??
+                    ticket?.paymentLink ??
+                    null
+                  : null
+              }
               closeModal={() => setModalState({ isOpen: false })}
             />
           </Modal>
         </div>
       ) : (
-        <Loading />
+        <SubscriptionSkeleton />
       )}
     </>
   );
