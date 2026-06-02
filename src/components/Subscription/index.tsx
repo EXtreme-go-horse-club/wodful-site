@@ -1,7 +1,6 @@
 import { navigate } from "gatsby";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
 import Modal from "react-modal";
 import { useForm } from "react-hook-form";
 import { SUBSCRIPTION_MAX_WIDTH_CLASS } from "../../constants/eventBanner";
@@ -50,7 +49,6 @@ const Validation = {
 };
 
 export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
-  const recaptchaCodeRef = React.useRef<ReCAPTCHA>(null);
   const [event, setEvent] = useState<EventResponse>();
   const [ticket, setTicket] = useState<Ticket>();
   const [indexes, setIndexes] = useState<number[]>([]);
@@ -70,23 +68,12 @@ export const SubscriptionData = ({ accessCode }: ISubscriptionData) => {
     mode: "all",
   });
 
-  // const [recaptcha, setRecaptcha] = React.useState("");
-  // const [isVerified, setIsVerified] = React.useState<boolean>(false);
   const [fake_field, setFakeField] = React.useState("");
 
   const [modalState, setModalState] = React.useState<ModalType>({
     isOpen: false,
     type: "success",
   } as ModalType);
-
-  // const onChange = (token: string) => {
-  //   setRecaptcha(token);
-  //   if (token) {
-  //     setIsVerified(true);
-  //   } else {
-  //     setIsVerified(false);
-  //   }
-  // };
 
   const canSubmit = !fake_field && isValid;
 
