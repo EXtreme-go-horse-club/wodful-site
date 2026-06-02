@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "public"
+
+[[redirects]]
+  from = "/event/*"
+  to = "/event/"
+  status = 200
+
+[[redirects]]
+  from = "/subscription/*"
+  to = "/subscription/"
+  status = 200

@@ -1,0 +1,2 @@
+/event/:accessCode  /event/  200
+/subscription/:accessCode  /subscription/  200
