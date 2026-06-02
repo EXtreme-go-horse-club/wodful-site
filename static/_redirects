@@ -1,4 +1,0 @@
-/event/*  /event/  200
-/subscription/*  /subscription/  200
-/event  /event/  301
-/subscription  /subscription/  301

@@ -71,12 +71,6 @@ const config: GatsbyConfig = {
         },
       ]
       : []),
-    {
-      resolve: "gatsby-plugin-netlify",
-      options: {
-        generateMatchPathRewrites: true,
-      },
-    },
   ],
 };
 
