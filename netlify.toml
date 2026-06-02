@@ -4,10 +4,22 @@
 
 [[redirects]]
   from = "/event/*"
-  to = "/event/"
+  to = "/event/index.html"
   status = 200
+  force = true
+
+[[redirects]]
+  from = "/event"
+  to = "/event/"
+  status = 301
 
 [[redirects]]
   from = "/subscription/*"
-  to = "/subscription/"
+  to = "/subscription/index.html"
   status = 200
+  force = true
+
+[[redirects]]
+  from = "/subscription"
+  to = "/subscription/"
+  status = 301

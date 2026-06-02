@@ -1,2 +1,4 @@
-/event/:accessCode  /event/  200
-/subscription/:accessCode  /subscription/  200
+/event/*  /event/index.html  200
+/subscription/*  /subscription/index.html  200
+/event  /event/  301
+/subscription  /subscription/  301
