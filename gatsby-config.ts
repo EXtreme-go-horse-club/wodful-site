@@ -21,7 +21,6 @@ const config: GatsbyConfig = {
   },
   plugins: [
     "gatsby-plugin-postcss",
-    "gatsby-plugin-netlify",
     {
       resolve: "gatsby-plugin-manifest",
       options: {
@@ -61,10 +60,20 @@ const config: GatsbyConfig = {
         ],
       },
     },
+    ...(process.env.GATSBY_GA_ID
+      ? [
+        {
+          resolve: "gatsby-plugin-google-gtag",
+          options: {
+            trackingIds: [process.env.GATSBY_GA_ID],
+          },
+        },
+      ]
+      : []),
     {
-      resolve: "gatsby-plugin-google-gtag",
+      resolve: "gatsby-plugin-netlify",
       options: {
-        trackingIds: [`${process.env.GATSBY_GA_ID}`],
+        generateMatchPathRewrites: true,
       },
     },
   ],
