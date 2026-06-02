@@ -27,7 +27,6 @@
     "gatsby-plugin-sitemap": "^6.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.49.0",
     "react-modal": "^3.16.1"
   },
@@ -36,7 +35,6 @@
     "@types/node": "^20.2.5",
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
-    "@types/react-google-recaptcha": "^2.1.5",
     "@types/react-modal": "^3.16.3",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
