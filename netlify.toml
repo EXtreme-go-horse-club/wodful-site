@@ -1,26 +1,3 @@
 [build]
   command = "npm run build"
   publish = "public"
-
-# Rewrites para rotas com accessCode (Gatsby matchPath + página em /event/)
-[[redirects]]
-  from = "/event/*"
-  to = "/event/"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/event"
-  to = "/event/"
-  status = 301
-
-[[redirects]]
-  from = "/subscription/*"
-  to = "/subscription/"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/subscription"
-  to = "/subscription/"
-  status = 301
