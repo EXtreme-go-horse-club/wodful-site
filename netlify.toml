@@ -2,9 +2,10 @@
   command = "npm run build"
   publish = "public"
 
+# Rewrites para rotas com accessCode (Gatsby matchPath + página em /event/)
 [[redirects]]
   from = "/event/*"
-  to = "/event/index.html"
+  to = "/event/"
   status = 200
   force = true
 
@@ -15,7 +16,7 @@
 
 [[redirects]]
   from = "/subscription/*"
-  to = "/subscription/index.html"
+  to = "/subscription/"
   status = 200
   force = true
 

@@ -1,25 +1,30 @@
 import * as React from "react";
 
+function readAccessCodeFromUrl(segment: "event" | "subscription"): string {
+  if (typeof window === "undefined") return "";
+  const match = window.location.pathname.match(
+    new RegExp(`/${segment}/([^/]+)`, "i")
+  );
+  return match?.[1] ? decodeURIComponent(match[1]) : "";
+}
+
+/**
+ * Obtém accessCode da URL após rewrite do Netlify (/event/CODE → /event/).
+ */
 export function useAccessCodeFromPath(
   segment: "event" | "subscription",
   accessCodeFromRouter?: string
 ): string {
-  const [accessCode, setAccessCode] = React.useState(accessCodeFromRouter ?? "");
+  const [accessCode, setAccessCode] = React.useState(
+    () => accessCodeFromRouter ?? readAccessCodeFromUrl(segment)
+  );
 
   React.useEffect(() => {
-    if (accessCodeFromRouter) {
-      setAccessCode(accessCodeFromRouter);
-      return;
+    const fromUrl = readAccessCodeFromUrl(segment);
+    if (fromUrl) {
+      setAccessCode(fromUrl);
     }
+  }, [segment]);
 
-    if (typeof window === "undefined") return;
-
-    const pattern = new RegExp(`/${segment}/([^/]+)`, "i");
-    const match = window.location.pathname.match(pattern);
-    if (match?.[1]) {
-      setAccessCode(decodeURIComponent(match[1]));
-    }
-  }, [accessCodeFromRouter, segment]);
-
-  return accessCodeFromRouter ?? accessCode;
+  return accessCodeFromRouter || accessCode;
 }

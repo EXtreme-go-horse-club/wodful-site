@@ -1,8 +1,8 @@
+/** @type {import('gatsby').GatsbyNode['onCreatePage']} */
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage } = actions;
 
-  const isEventPage =
-    page.path === "/event/" || page.path === "/event";
+  const isEventPage = page.path === "/event/" || page.path === "/event";
   const isSubscriptionPage =
     page.path === "/subscription/" || page.path === "/subscription";
 
