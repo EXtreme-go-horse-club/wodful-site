@@ -10,10 +10,11 @@
   "scripts": {
     "dev": "gatsby develop",
     "start": "gatsby develop",
-    "build": "gatsby build && node scripts/verify-build.js",
+    "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "verify-build": "node scripts/verify-build.js"
   },
   "dependencies": {
     "@lottiefiles/react-lottie-player": "^3.5.3",
