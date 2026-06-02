@@ -1,5 +1,6 @@
 import type { HeadFC } from "gatsby";
 import * as React from "react";
+import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { Seo } from "../components/SEO";
 import { Success } from "../components/Success";
@@ -36,10 +37,11 @@ export default function SubscriptionSuccess({ location }: PageProps) {
   }, [location?.search]);
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header isSimple />
       <Success status={status} accessCode={accessCode} />
-    </>
+      <Footer isSimple />
+    </div>
   );
 }
 
