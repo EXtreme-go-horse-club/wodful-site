@@ -40,8 +40,9 @@ export const EventData = ({ accessCode }: IEventData) => {
   }
 
   useEffect(() => {
+    if (!accessCode?.trim()) return;
     getEvent(accessCode);
-  }, [getEvent]);
+  }, [accessCode, getEvent]);
 
   return (
     <>
